@@ -1,4 +1,10 @@
-export default [
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true,
+});
+exports['default'] = void 0;
+var _default = [
   // user
   {
     path: '/user',
@@ -54,8 +60,7 @@ export default [
             component: './Dashboard/Workplace',
           },
         ],
-      },
-      // pipeline
+      }, // pipeline
       {
         path: '/pipeline',
         name: 'pipeline',
@@ -88,8 +93,7 @@ export default [
             ],
           },
         ],
-      },
-      // forms
+      }, // forms
       {
         path: '/form',
         icon: 'form',
@@ -312,3 +316,4 @@ export default [
     ],
   },
 ];
+exports['default'] = _default;

@@ -1,4 +1,10 @@
-export default {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true,
+});
+exports['default'] = void 0;
+var _default = {
   'menu.pipeline': 'pipeline',
   'menu.pipeline.pipelineList': 'pipeline列表',
   'menu.pipeline.pipelineConfig': 'pipeline配置',
@@ -289,3 +295,4 @@ export default {
   'app.setting.production.hint':
     '配置栏只在开发环境用于预览，生产环境不会展现，请拷贝后手动修改配置文件',
 };
+exports['default'] = _default;
