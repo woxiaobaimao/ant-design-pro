@@ -16,6 +16,11 @@ import {
   Input,
   List,
   Icon,
+  Drawer,
+  Form,
+  Switch,
+  Select
+
 } from 'antd';
 import { AppleOutlined, AndroidOutlined, SmallDashOutlined } from '@ant-design/icons';
 import { templateTypeListXXX, tTaskTemplatePage } from '@/services/pipeline';
@@ -25,6 +30,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './style.less';
 const { Search } = Input;
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 @connect(({ list, loading }) => ({
   list,
@@ -39,8 +45,10 @@ class CardList extends PureComponent {
       limit: 12,
     },
     total: 0,
-    visible: false,
+    visible: true,
   };
+
+
   // 初始化数据
   initData = () => {
     templateTypeListXXX('task_type').then(response => {
@@ -65,31 +73,22 @@ class CardList extends PureComponent {
     //   });
     // })
   };
-  editTask = () => {};
-  delTask = () => {};
+  editTask = () => { };
+  delTask = () => { };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
+  showDrawer = () => {
+    this.setState({ visible: true });
   };
-
-  handleOk = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  };
-
-  handleCancel = () => {
+  onClose = () => {
     this.setState({ visible: false });
   };
+
+
 
   componentDidMount() {
     this.initData();
   }
-  addPipeline() {}
-  changeTabs(key) {}
+  changeTabs(key) { }
   render() {
     const {
       list: { list },
@@ -133,13 +132,11 @@ class CardList extends PureComponent {
                     </Dropdown>
                   </div>
 
-                  <div>12</div>
-
                   {/* 图标 */}
 
-                  <div>11</div>
+                  <div>{item.taskName}</div>
 
-                  <div>22</div>
+                  <div>{item.flowTaskName || '--'}</div>
                 </Card>
               </List.Item>
             )}
@@ -155,26 +152,60 @@ class CardList extends PureComponent {
         <Tabs
           defaultActiveKey="1"
           onChange={this.changeTabs}
-          tabBarExtraContent={<Button type="primary">新建</Button>}
+          tabBarExtraContent={<Button type="primary" onClick={this.showDrawer}>新建</Button>}
         >
           {TabPaneItems}
         </Tabs>
-        ,
-        <Modal
+        <Drawer
+          title="新建"
           visible={this.state.visible}
-          title="Title"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Return
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              Submit
-            </Button>,
-          ]}
-        />
-      </PageHeaderWrapper>
+          placement="right"
+          onClose={this.onClose}
+          width="45%"
+          footer={
+            <div
+              style={{ textAlign: 'right' }}
+            >
+              <Button onClick={this.onClose} type="primary">
+                保存
+              </Button>
+              <Button onClick={this.save} style={{ marginRight: 8 }}>
+                取消
+              </Button>
+            </div>
+          }
+        >
+          <Form hideRequiredMark >
+            <Form.Item name="步骤类型" label="步骤类型" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="添加参数" label="添加参数" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="任务分类" label="任务分类" rules={[{ required: true }]}>
+              <Select >
+                <Option value="jack">Jack</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="中文名称" label="中文名称" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="英文名称" label="英文名称" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="任务图标" label="任务图标" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item rules={[{ required: true }]}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>是否有产出物</span>
+                <Switch checkedChildren="是" unCheckedChildren="否" />
+              </div>
+            </Form.Item>
+          </Form>
+        </Drawer >
+
+      </PageHeaderWrapper >
     );
   }
 }

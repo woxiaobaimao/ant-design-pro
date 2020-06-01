@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import {
   Card,
   Tag,
-  Modal,
   Row,
   Col,
   Divider,
@@ -13,14 +12,21 @@ import {
   Input,
   List,
   Icon,
+  Select,
+  Dropdown,
+  Menu,
+  Switch,
+  Drawer,
+  Form
 } from 'antd';
-// import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, SmallDashOutlined, SlidersOutlined, CarryOutOutlined } from '@ant-design/icons';
 import { getPipelineList } from '@/services/pipeline';
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './style.less';
 const { Search } = Input;
+const { Option } = Select;
 
 @connect(({ list, loading }) => ({
   list,
@@ -46,27 +52,18 @@ class CardList extends PureComponent {
     });
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
+  showDrawer = () => {
+    this.setState({ visible: true });
   };
-
-  handleOk = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  };
-
-  handleCancel = () => {
+  onClose = () => {
     this.setState({ visible: false });
   };
+
 
   componentDidMount() {
     this.initData();
   }
-  addPipeline() {}
+  addPipeline() { }
 
   render() {
     const {
@@ -77,12 +74,17 @@ class CardList extends PureComponent {
     return (
       <PageHeaderWrapper title="卡片列表">
         <div className={styles.pageTitle}>
-          <Search
-            placeholder="请输入流水线名称"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-          <Button type="primary" onClick={this.showModal}>
+          <div>
+            <Select style={{ width: 200 }} placeholder="请选择模板类型">
+              <Option value="jack">Jack</Option>
+            </Select>
+            <Search
+              placeholder="请输入步骤模板名称"
+              onSearch={value => console.log(value)}
+              style={{ width: 200, marginLeft: 10 }}
+            />
+          </div>
+          <Button type="primary" onClick={this.showDrawer}>
             新建流水线
           </Button>
         </div>
@@ -91,40 +93,42 @@ class CardList extends PureComponent {
           <List
             rowKey="id"
             loading={loading}
-            grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+            grid={{ gutter: 24, lg: 4, md: 2, sm: 1, xs: 1 }}
             dataSource={this.state.tableData}
             renderItem={item => (
               <List.Item key={item.id}>
                 <Card
+                  actions={[
+                    <div> <SlidersOutlined style={{ paddingRight: 10 }} />3</div>,
+                    <div> <CarryOutOutlined style={{ paddingRight: 10 }} />3</div>
+                  ]}
                   hoverable
                   className={styles.card}
                   title={item.pipelineName}
-                  extra={<a href="#">More</a>}
-                >
-                  <div className={styles.subTitle}>
-                    <Tag>{'#' + item.instNumber}</Tag>
-                    <Icon />
-                    <Tooltip title={item.serviceName}>
-                      <div>{item.serviceName}</div>
-                    </Tooltip>
-                  </div>
-                  <Divider />
-                  {/* 步骤条 */}
-                  <Divider />
+                  extra={<Dropdown
+                    overlay={
+                      <Menu>
+                        <Menu.Item>
+                          <EditOutlined onClick={this.editTask} /> 编辑
+                        </Menu.Item>
+                        <Menu.Item style={{ color: 'red' }}>
+                          <DeleteOutlined onClick={this.delTask} /> 删除
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    placement="bottomLeft"
 
-                  <div className={styles.cardBootom}>
-                    <div>
-                      <Tooltip>
-                        <Button shape="circle" />
-                      </Tooltip>
-                      <Tooltip>
-                        <Button shape="circle" style={{ marginLeft: 10 }} />
-                      </Tooltip>
-                    </div>
-                    <div>
-                      <Button type="primary">运行</Button>
-                    </div>
+                  >
+                    <SmallDashOutlined />
+                  </Dropdown>}
+                >
+                  <Tooltip title={item.serviceName}>
+                    <div>{item.serviceName}</div>
+                  </Tooltip>
+                  <div style={{ textAlign: 'center' }}>
+                    <Tag color="orange">11</Tag>
                   </div>
+
                 </Card>
               </List.Item>
             )}
@@ -133,20 +137,54 @@ class CardList extends PureComponent {
 
         <Pagination style={{ float: 'right' }} />
 
-        <Modal
+        <Drawer
+          title="新建"
           visible={this.state.visible}
-          title="Title"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Return
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              Submit
-            </Button>,
-          ]}
-        />
+          placement="right"
+          onClose={this.onClose}
+          width="45%"
+          footer={
+            <div
+              style={{ textAlign: 'right' }}
+            >
+              <Button onClick={this.onClose} type="primary">
+                保存
+              </Button>
+              <Button onClick={this.save} style={{ marginRight: 8 }}>
+                取消
+              </Button>
+            </div>
+          }
+        >
+          <Form hideRequiredMark >
+            <Form.Item name="步骤类型" label="步骤类型" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="添加参数" label="添加参数" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="任务分类" label="任务分类" rules={[{ required: true }]}>
+              <Select >
+                <Option value="jack">Jack</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="中文名称" label="中文名称" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="英文名称" label="英文名称" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="任务图标" label="任务图标" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item rules={[{ required: true }]}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>是否有产出物</span>
+                <Switch checkedChildren="是" unCheckedChildren="否" />
+              </div>
+            </Form.Item>
+          </Form>
+        </Drawer >
       </PageHeaderWrapper>
     );
   }

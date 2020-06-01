@@ -14,12 +14,12 @@ import {
   List,
   Icon,
 } from 'antd';
-// import { EditOutlined } from '@ant-design/icons';
+import { SearchOutlined, BlockOutlined, StarFilled, CloseCircleOutlined } from '@ant-design/icons';
 import { getPipelineList } from '@/services/pipeline';
-
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-
 import styles from './style.less';
+import StepList from '@/components/steps';
+
 const { Search } = Input;
 
 @connect(({ list, loading }) => ({
@@ -66,7 +66,7 @@ class CardList extends PureComponent {
   componentDidMount() {
     this.initData();
   }
-  addPipeline() {}
+  addPipeline() { }
 
   render() {
     const {
@@ -99,26 +99,38 @@ class CardList extends PureComponent {
                   hoverable
                   className={styles.card}
                   title={item.pipelineName}
-                  extra={<a href="#">More</a>}
+                  extra={<div><StarFilled style={{ color: 'rgb(255, 175, 56)', paddingRight: 10 }} />
+                    <CloseCircleOutlined style={{ color: 'red' }} /></div>}
+                  bodyStyle={{ padding: '24px 0' }}
                 >
-                  <div className={styles.subTitle}>
-                    <Tag>{'#' + item.instNumber}</Tag>
-                    <Icon />
+                  <div className={styles.tag}>
+                    <Tag>{'#' + (item.instNumber || '')}</Tag>
+                    <BlockOutlined style={{ paddingRight: 10 }} />
                     <Tooltip title={item.serviceName}>
                       <div>{item.serviceName}</div>
                     </Tooltip>
                   </div>
+                  <StepList></StepList>
                   <Divider />
-                  {/* 步骤条 */}
+                  <div className={styles.time}>
+                    <div>
+                      <Icon type="user" /> 11
+                    </div>
+                    <Divider type="vertical" />
+                    <div>
+                      <Icon type="user" />
+                      2020-05-28
+                    </div>
+                  </div>
                   <Divider />
 
                   <div className={styles.cardBootom}>
                     <div>
                       <Tooltip>
-                        <Button shape="circle" />
+                        <Button icon="setting" size="small" shape="circle" style={{ color: '#506f81', background: '#d4d8e1' }} />
                       </Tooltip>
                       <Tooltip>
-                        <Button shape="circle" style={{ marginLeft: 10 }} />
+                        <Button icon="delete" size="small" shape="circle" style={{ marginLeft: 10, color: '#506f81', background: '#d4d8e1' }} />
                       </Tooltip>
                     </div>
                     <div>
