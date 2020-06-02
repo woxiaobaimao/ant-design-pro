@@ -1,0 +1,1 @@
+.step .card{height:136px;background:#f6f6f5;padding:20px;cursor:pointer;border:0}.step .card .draw{margin-top:20px}.step .card .draw .block{width:100px;height:40px;background-color:#fff;display:flex;align-items:center;justify-content:center;border-radius:8px;color:rgba(27,27,27,.6)}.step .card .draw .line{width:40px;height:1px;border-top:solid #c5c8cb 1px;margin-top:5px}

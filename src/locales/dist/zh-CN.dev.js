@@ -1,12 +1,14 @@
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-exports['default'] = void 0;
+exports["default"] = void 0;
 var _default = {
   'menu.pipeline': 'pipeline',
   'menu.pipeline.pipelineList': 'pipeline列表',
+  'menu.pipeline.pipelineRun': '流水线运行',
+  'menu.pipeline.pipelineEdit': '流水线编辑',
   'menu.pipeline.pipelineConfig': 'pipeline配置',
   'menu.pipeline.pipelineConfig.taskTemplate': '任务模板',
   'menu.pipeline.pipelineConfig.stepTemplate': '步骤模板',
@@ -127,8 +129,7 @@ var _default = {
   'app.register.get-verification-code': '获取验证码',
   'app.register.sing-in': '使用已有账户登录',
   'app.register-result.msg': '你的账户：{email} 注册成功',
-  'app.register-result.activation-email':
-    '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
+  'app.register-result.activation-email': '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
   'app.register-result.back-home': '返回首页',
   'app.register-result.view-mailbox': '查看邮箱',
   'app.home.introduce': '介绍',
@@ -165,8 +166,7 @@ var _default = {
   'app.analysis.table.users': '用户数',
   'app.analysis.table.weekly-range': '周涨幅',
   'app.forms.basic.title': '基础表单',
-  'app.forms.basic.description':
-    '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
+  'app.forms.basic.description': '表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。',
   'app.monitor.trading-activity': '活动实时交易情况',
   'app.monitor.total-transactions': '今日交易总额',
   'app.monitor.sales-target': '销售目标完成率',
@@ -249,8 +249,7 @@ var _default = {
   'app.result.error.hint-btn2': '立即升级',
   'app.result.error.btn-text': '返回修改',
   'app.result.success.title': '提交成功',
-  'app.result.success.description':
-    '提交结果页用于反馈一系列操作任务的处理结果， 如果仅是简单操作，使用 Message 全局提示反馈即可。 本文字区域可以展示简单的补充说明，如果有类似展示 “单据”的需求，下面这个灰色区域可以呈现比较复杂的内容。',
+  'app.result.success.description': '提交结果页用于反馈一系列操作任务的处理结果， 如果仅是简单操作，使用 Message 全局提示反馈即可。 本文字区域可以展示简单的补充说明，如果有类似展示 “单据”的需求，下面这个灰色区域可以呈现比较复杂的内容。',
   'app.result.success.operate-title': '项目名称',
   'app.result.success.operate-id': '项目 ID：',
   'app.result.success.principal': '负责人：',
@@ -292,7 +291,6 @@ var _default = {
   'app.setting.weakmode': '色弱模式',
   'app.setting.copy': '拷贝设置',
   'app.setting.copyinfo': '拷贝成功，请到 src/defaultSettings.js 中替换默认配置',
-  'app.setting.production.hint':
-    '配置栏只在开发环境用于预览，生产环境不会展现，请拷贝后手动修改配置文件',
+  'app.setting.production.hint': '配置栏只在开发环境用于预览，生产环境不会展现，请拷贝后手动修改配置文件'
 };
-exports['default'] = _default;
+exports["default"] = _default;

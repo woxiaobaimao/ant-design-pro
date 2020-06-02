@@ -1,0 +1,17 @@
+.codeBlock {
+  border: 1px solid #ebebeb;
+  padding: 10px;
+  margin-top: 10px;
+  height: 71px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+.drawBg {
+  background-color: #f6f7f9;
+  color: #333;
+  padding: 40px 0 0 20px;
+  height: 600px;
+  overflow-x: auto;
+}

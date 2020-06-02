@@ -1,6 +1,14 @@
 import axios from 'axios';
 
 // 流水线模板
+export function tPipelineTemplateFindByType(query) {
+  return axios({
+    url: '/api/tPipelineTemplate/findByType',
+    method: 'get',
+    params: query
+  })
+}
+// 流水线列表
 export function getPipelineList(query) {
   return axios({
     url: '/api/gPipeline/allPipelineList',
@@ -8,6 +16,7 @@ export function getPipelineList(query) {
     params: query,
   });
 }
+
 
 // 任务模板
 export function templateTypeListXXX(query) {

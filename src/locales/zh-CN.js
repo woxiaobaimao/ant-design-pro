@@ -1,6 +1,8 @@
 export default {
   'menu.pipeline': 'pipeline',
   'menu.pipeline.pipelineList': 'pipeline列表',
+  'menu.pipeline.pipelineRun': '流水线运行',
+  'menu.pipeline.pipelineEdit': '流水线编辑',
   'menu.pipeline.pipelineConfig': 'pipeline配置',
   'menu.pipeline.pipelineConfig.taskTemplate': '任务模板',
   'menu.pipeline.pipelineConfig.stepTemplate': '步骤模板',

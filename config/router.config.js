@@ -67,6 +67,16 @@ export default [
             component: './pipeline/pipelineList',
           },
           {
+            name: 'pipelineRun',
+            path: '/pipeline/pipelineRun',
+            component: './pipeline/pipelineList/pipelineRun',
+          },
+          {
+            name: 'pipelineEdit',
+            path: '/pipeline/pipelineEdit',
+            component: './pipeline/pipelineList/pipelineEdit',
+          },
+          {
             name: 'pipelineConfig',
             path: '/pipeline/pipelineConfig',
             routes: [
