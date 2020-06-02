@@ -65,21 +65,23 @@ class CardList extends PureComponent {
   componentDidMount() {
     this.initData();
   }
-  addPipeline() { }
-
+  onClickMenu = ({ key }) => {
+    if (key == 'edit') {
+      this.editStep()
+    } else {
+      this.delStep()
+    }
+  }
   delStep = () => {
-    console.log(111);
     notification['success']({
-      message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      message: '操作提示',
+      description: '删除成功',
     });
   };
   editStep = () => {
     notification['success']({
       message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      description: '编辑成功',
     });
   };
 
@@ -124,13 +126,14 @@ class CardList extends PureComponent {
                   className={styles.card}
                   title={item.pipelineName}
                   extra={<Dropdown
+                    trigger={['click']}
                     overlay={
-                      <Menu>
-                        <Menu.Item>
-                          <EditOutlined onClick={this.editStep} /> 编辑
+                      <Menu onClick={this.onClickMenu}>
+                        <Menu.Item key="edit">
+                          <EditOutlined /> 编辑
                         </Menu.Item>
-                        <Menu.Item style={{ color: 'red' }}>
-                          <DeleteOutlined onClick={this.delStep} /> 删除
+                        <Menu.Item key="del" style={{ color: 'red' }}>
+                          <DeleteOutlined /> 删除
                         </Menu.Item>
                       </Menu>
                     }
