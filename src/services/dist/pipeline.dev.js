@@ -9,6 +9,8 @@ exports.deletePipelineData = deletePipelineData;
 exports.gPipelineRunpipelineRun = gPipelineRunpipelineRun;
 exports.templateTypeListXXX = templateTypeListXXX;
 exports.tTaskTemplatePage = tTaskTemplatePage;
+exports.tTaskTemplategetTaskTemplate = tTaskTemplategetTaskTemplate;
+exports.tTaskTemplatedeleteTaskTemplate = tTaskTemplatedeleteTaskTemplate;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -60,5 +62,20 @@ function tTaskTemplatePage(query) {
     url: '/api/tTaskTemplate/page',
     method: 'get',
     params: query
+  });
+}
+
+function tTaskTemplategetTaskTemplate(taskId) {
+  return (0, _axios["default"])({
+    url: '/api/tTaskTemplate/getTaskTemplate/' + taskId,
+    method: 'get'
+  });
+}
+
+function tTaskTemplatedeleteTaskTemplate(obj) {
+  return (0, _axios["default"])({
+    url: '/api/tTaskTemplate/deleteTaskTemplate',
+    method: 'post',
+    data: obj
   });
 } // 步骤模板

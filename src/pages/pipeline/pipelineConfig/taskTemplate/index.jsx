@@ -19,23 +19,25 @@ import {
   Drawer,
   Form,
   Switch,
-  Select
+  Select,
+  notification
 
 } from 'antd';
-import { AppleOutlined, AndroidOutlined, SmallDashOutlined } from '@ant-design/icons';
-import { templateTypeListXXX, tTaskTemplatePage } from '@/services/pipeline';
+import { EditOutlined, DeleteOutlined, AppleOutlined, AndroidOutlined, SmallDashOutlined } from '@ant-design/icons';
+import { templateTypeListXXX, tTaskTemplatePage, tTaskTemplategetTaskTemplate, tTaskTemplatedeleteTaskTemplate } from '@/services/pipeline';
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './style.less';
+
+const FormItem = Form.Item;
 const { Search } = Input;
 const { TabPane } = Tabs;
 const { Option } = Select;
+const { confirm } = Modal;
 
-@connect(({ list, loading }) => ({
-  list,
-  loading: loading.models.list,
-}))
+@Form.create()
+
 class CardList extends PureComponent {
   state = {
     typeList: [],
@@ -73,8 +75,53 @@ class CardList extends PureComponent {
     //   });
     // })
   };
-  editTask = () => { };
-  delTask = () => { };
+  onClickMenu = (row, { key }) => {
+    if (key == 'edit') {
+      this.editStep(row.taskId)
+    } else {
+      this.delStep(row)
+    }
+  }
+  delStep = (row) => {
+    confirm({
+      title: '提示',
+      content: '此操作将永久删除, 是否继续? ?',
+      onOk: () => {
+        tTaskTemplatedeleteTaskTemplate({
+          taskId: row.taskId
+        }).then(() => {
+          notification['success']({
+            message: '操作提示',
+            description: '删除成功',
+          });
+          this.initData()
+        })
+      }
+    })
+  };
+  editStep = (taskId) => {
+    tTaskTemplategetTaskTemplate(taskId).then((response) => {
+      this.setState({
+        visible: true
+      });
+      console.log(response.data.data);
+      notification['success']({
+        message: '操作提示',
+        description: '编辑成功',
+      });
+      // this.initData()
+    })
+  }
+
+  handleSubmit = e => {
+    const { dispatch, form } = this.props;
+    e.preventDefault();
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values);
+      }
+    });
+  };
 
   showDrawer = () => {
     this.setState({ visible: true });
@@ -84,16 +131,20 @@ class CardList extends PureComponent {
   };
 
 
-
   componentDidMount() {
     this.initData();
   }
   changeTabs(key) { }
+
   render() {
+
     const {
-      list: { list },
-      loading,
+      form: { getFieldDecorator, getFieldValue },
     } = this.props;
+
+    let typeListItems = this.state.typeList.map((item, key) => (
+      <Option value="jack" key={key}> Jack</Option>
+    ));
 
     let TabPaneItems = this.state.typeList.map((item, key) => (
       <TabPane
@@ -108,7 +159,6 @@ class CardList extends PureComponent {
         <div className={styles.cardList}>
           <List
             rowKey="id"
-            loading={loading}
             grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
             dataSource={this.state.tableData}
             renderItem={item => (
@@ -117,12 +167,12 @@ class CardList extends PureComponent {
                   <div style={{ textAlign: 'right' }}>
                     <Dropdown
                       overlay={
-                        <Menu>
-                          <Menu.Item>
-                            <SmallDashOutlined onClick={this.editTask} /> 编辑
+                        <Menu onClick={(e) => { this.onClickMenu(item, e) }}>
+                          <Menu.Item key="edit">
+                            <EditOutlined /> 编辑
                           </Menu.Item>
-                          <Menu.Item>
-                            <SmallDashOutlined onClick={this.delTask} /> 删除
+                          <Menu.Item key="del" style={{ color: 'red' }}>
+                            <DeleteOutlined /> 删除
                           </Menu.Item>
                         </Menu>
                       }
@@ -175,26 +225,33 @@ class CardList extends PureComponent {
             </div>
           }
         >
-          <Form hideRequiredMark >
-            <Form.Item name="步骤类型" label="步骤类型" rules={[{ required: true }]}>
-              <Input />
+          <Form layout="vertical">
+
+            <Form.Item label="步骤类型" rules={[{ required: true }]}>
+              {/* <Input /> */}
             </Form.Item>
-            <Form.Item name="添加参数" label="添加参数" rules={[{ required: true }]}>
-              <Input />
+            <Form.Item label="添加参数" rules={[{ required: true }]}>
+              {/* <Input /> */}
             </Form.Item>
-            <Form.Item name="任务分类" label="任务分类" rules={[{ required: true }]}>
-              <Select >
-                <Option value="jack">Jack</Option>
-              </Select>
+            <Form.Item label="任务分类" rules={[{ required: true }]}>
+              {getFieldDecorator('type', {
+                rules: [{ required: true, message: '请选择任务分类' }],
+              })(<Select placeholder="请选择任务分类">
+                {typeListItems}
+              </Select>)}
             </Form.Item>
-            <Form.Item name="中文名称" label="中文名称" rules={[{ required: true }]}>
-              <Input />
+            <Form.Item label="中文名称">
+              {getFieldDecorator('zn', {
+                rules: [{ required: true, message: '请输入中文名称' }],
+              })(<Input placeholder="请输入中文名称" />)}
             </Form.Item>
-            <Form.Item name="英文名称" label="英文名称" rules={[{ required: true }]}>
-              <Input />
+            <Form.Item label="英文名称">
+              {getFieldDecorator('en', {
+                rules: [{ required: true, message: '请输入英文名称' }],
+              })(<Input placeholder="请输入英文名称" />)}
             </Form.Item>
             <Form.Item name="任务图标" label="任务图标" rules={[{ required: true }]}>
-              <Input />
+              {/* <Input /> */}
             </Form.Item>
             <Form.Item rules={[{ required: true }]}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -203,6 +260,25 @@ class CardList extends PureComponent {
               </div>
             </Form.Item>
           </Form>
+          <div
+            style={{
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              borderTop: '1px solid #e9e9e9',
+              padding: '10px 16px',
+              background: '#fff',
+              textAlign: 'left',
+            }}
+          >
+            <Button onClick={this.handleSubmit} type="primary">
+              保存
+            </Button>
+            <Button onClick={this.onClose} style={{ marginLeft: 8 }}>
+              取消
+            </Button>
+          </div>
         </Drawer >
 
       </PageHeaderWrapper >

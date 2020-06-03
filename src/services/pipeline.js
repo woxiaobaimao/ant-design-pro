@@ -50,4 +50,19 @@ export function tTaskTemplatePage(query) {
   });
 }
 
+export function tTaskTemplategetTaskTemplate(taskId) {
+  return axios({
+    url: '/api/tTaskTemplate/getTaskTemplate/' + taskId,
+    method: 'get'
+  })
+}
+
+export function tTaskTemplatedeleteTaskTemplate(obj) {
+  return axios({
+    url: '/api/tTaskTemplate/deleteTaskTemplate',
+    method: 'post',
+    data: obj
+  })
+}
+
 // 步骤模板
