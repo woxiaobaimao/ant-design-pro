@@ -20,21 +20,11 @@ import { getPipelineList } from '@/services/pipeline';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './style.less';
-const { Search } = Input;
 
-@connect(({ list, loading }) => ({
-  list,
-  loading: loading.models.list,
-}))
+
 class StepList extends PureComponent {
   state = {
-    tableData: [],
-    page: {
-      page: 1,
-      limit: 12,
-    },
-    total: 0,
-    visible: false,
+    stepList: [1, 2]
   };
   // 初始化数据
   initData = () => {
@@ -46,45 +36,28 @@ class StepList extends PureComponent {
     });
   };
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  };
-
-  handleCancel = () => {
-    this.setState({ visible: false });
-  };
 
   componentDidMount() {
     this.initData();
   }
-  addPipeline() { }
 
   render() {
-    const {
-      list: { list },
-      loading,
-    } = this.props;
+
+    const stepListItems = this.state.stepList.map((item, key) =>
+      <div key={key} className={styles.stepClass}>
+        <div className="antd- antd-correct">
+          {/* <Tooltip title="1">
+            <div className={styles.text}>代码扫描</div>
+          </Tooltip> */}
+        </div >
+        <div className={styles.line}></div>
+        {/* <div >.........</div> */}
+      </div >
+    )
 
     return (
-      <div className={styles.step}>
-        <div  >
-          <div >
-            <Tooltip title="1">
-              <div >11</div>
-            </Tooltip>
-          </div >
-          <div></div>
-          <div >.........</div>
-        </div >
+      <div className={styles.stepClass}>
+        {stepListItems}
       </div >
     );
   }

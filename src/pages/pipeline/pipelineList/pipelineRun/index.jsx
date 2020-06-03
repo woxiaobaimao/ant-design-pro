@@ -30,14 +30,8 @@ const { TabPane } = Tabs;
 }))
 class CardList extends PureComponent {
   state = {
-    codeList: [1, 2],
-    page: {
-      page: 1,
-      limit: 12,
-    },
-    total: 0,
-    visible: false,
-    collapsed: false,
+    isleftPanel: false,
+    codeList: []
   };
   toggle = () => {
     this.setState({
@@ -54,24 +48,6 @@ class CardList extends PureComponent {
     });
   };
 
-  changeSearchName = (e) => {
-    this.setState({
-      page: { ...this.state.page, pipelineName: e.target.value || undefined }
-    });
-  };
-
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  };
 
   handleCancel = () => {
     this.setState({ visible: false });
@@ -81,6 +57,12 @@ class CardList extends PureComponent {
     this.initData();
   }
   changeTabs() { }
+
+  leftPanelFold = () => {
+    this.setState({
+      isleftPanel: !isleftPanel,
+    });
+  }
 
   render() {
     const {
@@ -110,30 +92,85 @@ class CardList extends PureComponent {
               }
               key={1}>
               <Row>
-                <Col span={5}>
-                  <div><span>1</span><MenuFoldOutlined></MenuFoldOutlined><span>运行成功</span></div>
-                  <div>sonar红线</div>
-                  <div>
+                <Col span={5} className={styles.leftPanel}>
+                  <div className={styles.t1}>
+                    <div>
+                      <span>#21</span>
+                      <MenuFoldOutlined style={{ padding: '0 10px' }} />
+                      <span>运行成功</span>
+                    </div>
+                    <div>
+                      <Button type="primary">停止</Button>
+                    </div>
+                  </div>
+                  <div style={{ marginTop: 10 }}>sonar红线</div>
+                  <div style={{ marginTop: 10, display: 'flex' }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      <MenuFoldOutlined></MenuFoldOutlined>
+                      <div style={{ marginLeft: 20 }}>
+                        <div >Iva Guzman</div>
+                        <div >运行人</div>
+                      </div>
+                    </div>
+                    <div style={{ marginLeft: 20 }}>
+                      <MenuFoldOutlined></MenuFoldOutlined>
+                      <span>2分41秒</span>
+                    </div>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
                     <div>
                       <div></div>
                     </div>
-                    <div>2020-06-02 11:10:02</div>
+                    <div> <MenuFoldOutlined></MenuFoldOutlined> 2020-06-02 11:10:02</div>
                   </div>
                   <Divider></Divider>
                   {/* 代码源 */}
                   <div>
                     <div>代码源</div>
                     <div>
-                      <Button type="link">添加源</Button>
+                      <Button type="link" icon="plus" style={{ paddingLeft: 0 }}>添加源</Button>
                     </div>
                     <div>
                       {codeReasourceItems}
                     </div>
                   </div>
                 </Col>
-                <Col span={19} className={styles.drawBg}>
+                <Col span={1}>
+                  <MenuFoldOutlined onClick={this.leftPanelFold} />
+                </Col>
+                <Col span={18} className={styles.drawBg}>
+                  <div className={styles.draw}>
+                    <div className={styles.circle}></div>
+                    <div className={styles.line}></div>
+                    {/* 阶段 */}
+                    <div className={styles.phase}>
+                      <div className={styles.listAll}>
+                        <div className={styles.superBlock}>
+                          <MenuFoldOutlined style={{ paddingRight: 10 }}></MenuFoldOutlined>代码扫描
+                        </div>
+                        <div className={styles.taskList}>
+                          <div className={styles.verticalLine}></div>
+                          <div className={styles.subBlock}>
 
+                          </div>
+                          <div className={styles.line} style={{ marginTop: '164px' }}>
 
+                          </div>
+                          {/* 关键任务数组 */}
+                          <div className={styles.taskItem}>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.line}>
+
+                      </div>
+                    </div>
+                    <div className={styles.circle}></div>
+                  </div>
                 </Col>
               </Row>
             </TabPane>

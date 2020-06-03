@@ -17,6 +17,22 @@ export function getPipelineList(query) {
   });
 }
 
+export function deletePipelineData(id) {
+  return axios({
+    url: '/api/gPipeline/deletePipelineData/' + id,
+    method: 'delete',
+  })
+}
+
+
+export function gPipelineRunpipelineRun(id, obj) {
+  return axios({
+    url: '/api/gPipeline/pipelineRun/' + id,
+    method: 'post',
+    data: obj
+  })
+}
+
 
 // 任务模板
 export function templateTypeListXXX(query) {

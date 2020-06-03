@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.tPipelineTemplateFindByType = tPipelineTemplateFindByType;
 exports.getPipelineList = getPipelineList;
+exports.deletePipelineData = deletePipelineData;
+exports.gPipelineRunpipelineRun = gPipelineRunpipelineRun;
 exports.templateTypeListXXX = templateTypeListXXX;
 exports.tTaskTemplatePage = tTaskTemplatePage;
 
@@ -27,6 +29,21 @@ function getPipelineList(query) {
     url: '/api/gPipeline/allPipelineList',
     method: 'get',
     params: query
+  });
+}
+
+function deletePipelineData(id) {
+  return (0, _axios["default"])({
+    url: '/api/gPipeline/deletePipelineData/' + id,
+    method: 'delete'
+  });
+}
+
+function gPipelineRunpipelineRun(id, obj) {
+  return (0, _axios["default"])({
+    url: '/api/gPipeline/pipelineRun/' + id,
+    method: 'post',
+    data: obj
   });
 } // 任务模板
 

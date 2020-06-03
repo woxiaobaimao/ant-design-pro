@@ -1,4 +1,21 @@
-.step {
- text-align: center;
- margin: 21px 0;
-}
+.stepClass {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .stateIcon {
+      width: 13px;
+      height: 14px;
+      .text {
+        position: absolute;
+        transform: translate(-35%, -25px);
+      }
+    }
+   
+    .line {
+      width: 57px;
+      height: 1px;
+      margin-top: -1px;
+      background: #cfcfcf;
+    }
+  }

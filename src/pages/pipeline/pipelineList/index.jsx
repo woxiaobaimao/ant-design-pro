@@ -13,9 +13,14 @@ import {
   Input,
   List,
   Icon,
+  notification
 } from 'antd';
 import { SearchOutlined, BlockOutlined, StarFilled, CloseCircleOutlined } from '@ant-design/icons';
-import { getPipelineList } from '@/services/pipeline';
+import {
+  getPipelineList,
+  deletePipelineData,
+  gPipelineRunpipelineRun
+} from '@/services/pipeline';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './style.less';
 import StepList from '@/components/steps';
@@ -23,10 +28,8 @@ import PipelineTemplate from '@/components/pipelineTamplate';
 
 const { Search } = Input;
 
-@connect(({ list, loading }) => ({
-  list,
-  loading: loading.models.list,
-}))
+const { confirm } = Modal;
+
 class CardList extends PureComponent {
   state = {
     tableData: [],
@@ -75,11 +78,48 @@ class CardList extends PureComponent {
   }
   addPipeline() { }
 
+  gotoRunOrEdit(pipelineId, instNumber) {
+    console.log(instNumber);
+    if (instNumber) {
+      this.props.history.push({ pathname: '/pipeline/pipelineRun', state: { pipelineId, number: instNumber } })
+    } else {
+      this.gotoEditor(pipelineId)
+    }
+  }
+
+  gotoEditor(pipelineId) {
+    this.props.history.push({ pathname: '/pipeline/pipelineEdit', state: { pipelineId } })
+  }
+
+  delPipeline(pipelineId) {
+    confirm({
+      title: "提示",
+      content: "是否删除流水线?",
+      onOk: () => {
+        deletePipelineData(pipelineId).then(response => {
+          notification["success"]({
+            message: "提示",
+            description: "删除成功",
+            duration: 8
+          });
+          this.initData()
+        })
+      }
+    });
+  }
+
+  gotoRunFlow = (pipelineId) => {
+    gPipelineRunpipelineRun(pipelineId).then(response => {
+      notification["success"]({
+        message: "提示",
+        description: "运行成功",
+        duration: 8
+      });
+      this.props.history.push({ pathname: '/pipeline/pipelineRun', state: { pipelineId, number: response.data.data.instNumber } })
+    })
+  }
+
   render() {
-    const {
-      list: { list },
-      loading,
-    } = this.props;
 
     return (
       <PageHeaderWrapper title="卡片列表">
@@ -91,7 +131,7 @@ class CardList extends PureComponent {
             onSearch={this.initData}
             style={{ width: 200 }}
           />
-          <Button type="primary" onClick={this.showModal}>
+          <Button type="primary" icon="plus" onClick={this.showModal}>
             新建流水线
           </Button>
         </div>
@@ -99,7 +139,6 @@ class CardList extends PureComponent {
         <div className={styles.cardList}>
           <List
             rowKey="id"
-            loading={loading}
             grid={{ gutter: 15, lg: 4 }}
             dataSource={this.state.tableData}
             renderItem={item => (
@@ -119,6 +158,7 @@ class CardList extends PureComponent {
                     </div>
                   }
                   bodyStyle={{ padding: '24px 0' }}
+                  onClick={(e) => this.gotoRunOrEdit(item.pipelineId, item.instNumber)}
                 >
                   <div className={styles.tag}>
                     <Tag>{'#' + (item.instNumber || '')}</Tag>
@@ -131,12 +171,12 @@ class CardList extends PureComponent {
                   <Divider />
                   <div className={styles.time}>
                     <div>
-                      <Icon type="user" /> 11
+                      <Icon type="user" /> {item.runPerson}
                     </div>
                     <Divider type="vertical" />
                     <div>
                       <Icon type="user" />
-                      2020-05-28
+                      {item.lastRunTime}
                     </div>
                   </div>
                   <Divider />
@@ -144,14 +184,20 @@ class CardList extends PureComponent {
                   <div className={styles.cardBootom}>
                     <div>
                       <Tooltip title="编辑">
-                        <Button icon="setting" size="small" shape="circle" style={{ color: '#506f81', background: '#d4d8e1' }} />
+                        <Button icon="setting" size="small" shape="circle"
+                          style={{ color: '#506f81', background: '#d4d8e1' }}
+                          onClick={(e) => this.gotoEditor(item.pipelineId, e)}
+                        />
                       </Tooltip>
                       <Tooltip title="删除">
-                        <Button icon="delete" size="small" shape="circle" style={{ marginLeft: 10, color: '#506f81', background: '#d4d8e1' }} />
+                        <Button icon="delete" size="small" shape="circle"
+                          style={{ marginLeft: 10, color: '#506f81', background: '#d4d8e1' }}
+                          onClick={(e) => this.delPipeline(item.pipelineId, e)}
+                        />
                       </Tooltip>
                     </div>
                     <div>
-                      <Button type="primary">运行</Button>
+                      <Button type="primary" icon="caret-right" onClick={(e) => this.gotoRunFlow(item.pipelineId, e)}>运行</Button>
                     </div>
                   </div>
                 </Card>

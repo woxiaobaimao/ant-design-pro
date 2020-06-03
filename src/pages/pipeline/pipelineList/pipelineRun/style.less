@@ -1,19 +1,137 @@
-
-.codeBlock{
-  border: 1px solid rgba(235, 235, 235, 1);
-  padding: 10px;
-  margin-top: 10px;
-  height: 71px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
+.leftPanel{
+  .t1{
+    display:flex;justify-content: space-between;
+  }
 }
-.drawBg{
+
+.drawBg {
   background-color: #f6f7f9;
   color: #333;
   padding: 40px 0 0 20px;
   // background-image: url("../../../assets/u1020.png");
   height: 600px;
   overflow-x: auto;
+  .draw {
+    display: -webkit-box;
+    .circle {
+      width: 10px;
+      height: 10px;
+      background: #787f88;
+      border-radius: 50%;
+      border: 1px solid #787f88;
+    }
+    .line {
+      width: 70px;
+      height: 1px;
+      border-top: solid rgba(197, 200, 203, 1) 1px;
+      margin-top: 5px;
+    }
+
+    .phase {
+      display: flex;
+      position: relative;
+      z-index: 99;
+      // padding-right: 100px;
+      .listAll {
+        .superBlock {
+          width: 238px;
+          height: 40px;
+          border-radius: 4px;
+          padding-left: 10px;
+          background-color: rgba(255, 255, 255, 1);
+          display: flex;
+          align-items: center;
+          margin-top: -13px;
+          justify-content: flex-start;
+        }
+        .taskList{
+          display: flex;
+          margin-top: -70px;
+          .verticalLine {
+            background: url("/public/verticalLine.svg") left no-repeat;
+            margin-left: 10px;
+            width: 32px;
+            height: 164px;
+            z-index: -1;
+          }
+          .subBlock {
+            cursor: pointer;
+            height: 36px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 1);
+            margin-top: 147px;
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+    .phaseALine {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  }
 }
+  
+  
+
+  .block {
+    width: 238px;
+    height: 40px;
+    border-radius: 4px;
+    padding-left: 10px;
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+  }
+ 
+  // 运行卡片
+  .run-card {
+    height: 130px;
+    border-top: 3px solid;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 1);
+    margin-top: 117px;
+    min-width: 280px;
+    padding: 0 20px;
+    position: relative;
+    font-size: 12px;
+    .card-header {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      span {
+        padding-left: 10px;
+      }
+    }
+    .card-body {
+      padding: 10px 0;
+      text-align: center;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      color: #8c8c8c;
+      .footer-left {
+        display: flex;
+      }
+      div {
+        cursor: pointer;
+        padding-left: 7px;
+        span {
+          padding-left: 5px;
+        }
+      }
+    }
+  }
+  .subDashed {
+    margin: -13px 0 0 41px;
+  }

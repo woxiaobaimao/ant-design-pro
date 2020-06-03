@@ -1,1 +1,1 @@
-.step{text-align:center;margin:21px 0}
+.stepClass{height:30px;display:flex;justify-content:center;align-items:center}.stepClass .stateIcon{width:13px;height:14px}.stepClass .stateIcon .text{position:absolute;transform:translate(-35%,-25px)}.stepClass .line{width:57px;height:1px;margin-top:-1px;background:#cfcfcf}
