@@ -14,10 +14,9 @@ import {
   List,
   Icon,
 } from 'antd';
-// import { EditOutlined } from '@ant-design/icons';
 import { getPipelineList } from '@/services/pipeline';
-
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import PipelineTemplate from '@/components/pipelineTamplate';
 
 import styles from './style.less';
 const { Search } = Input;
@@ -66,7 +65,7 @@ class CardList extends PureComponent {
   componentDidMount() {
     this.initData();
   }
-  addPipeline() {}
+  addPipeline() { }
 
   render() {
     const {
@@ -76,77 +75,9 @@ class CardList extends PureComponent {
 
     return (
       <PageHeaderWrapper title="卡片列表">
-        <div className={styles.pageTitle}>
-          <Search
-            placeholder="请输入流水线名称"
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
-          <Button type="primary" onClick={this.showModal}>
-            新建流水线
-          </Button>
-        </div>
-
-        <div className={styles.cardList}>
-          <List
-            rowKey="id"
-            loading={loading}
-            grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
-            dataSource={this.state.tableData}
-            renderItem={item => (
-              <List.Item key={item.id}>
-                <Card
-                  hoverable
-                  className={styles.card}
-                  title={item.pipelineName}
-                  extra={<a href="#">More</a>}
-                >
-                  <div className={styles.subTitle}>
-                    <Tag>{'#' + item.instNumber}</Tag>
-                    <Icon />
-                    <Tooltip title={item.serviceName}>
-                      <div>{item.serviceName}</div>
-                    </Tooltip>
-                  </div>
-                  <Divider />
-                  {/* 步骤条 */}
-                  <Divider />
-
-                  <div className={styles.cardBootom}>
-                    <div>
-                      <Tooltip>
-                        <Button shape="circle" />
-                      </Tooltip>
-                      <Tooltip>
-                        <Button shape="circle" style={{ marginLeft: 10 }} />
-                      </Tooltip>
-                    </div>
-                    <div>
-                      <Button type="primary">运行</Button>
-                    </div>
-                  </div>
-                </Card>
-              </List.Item>
-            )}
-          />
-        </div>
-
-        <Pagination style={{ float: 'right' }} />
-
-        <Modal
-          visible={this.state.visible}
-          title="Title"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Return
-            </Button>,
-            <Button key="submit" type="primary" onClick={this.handleOk}>
-              Submit
-            </Button>,
-          ]}
-        />
+        <Card>
+          <PipelineTemplate></PipelineTemplate>
+        </Card>
       </PageHeaderWrapper>
     );
   }

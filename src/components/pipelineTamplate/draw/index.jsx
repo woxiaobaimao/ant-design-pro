@@ -74,7 +74,7 @@ class StepList extends PureComponent {
             dataSource={this.state.pipelineList}
             renderItem={item => (
               <List.Item>
-                <Card className={styles.card} bodyStyle={{ padding: 0 }} >
+                <Card className={styles.card} bodyStyle={{ padding: 0 }}>
                   <div> <AppleOutlined></AppleOutlined> {item.pipelineName}</div>
                   <div className={styles.draw}>
                     {/* {item.phases.map((item, key) => (12))} */}
@@ -99,16 +99,7 @@ class StepList extends PureComponent {
     ));
 
     return (
-      <Tabs
-        className={styles.step}
-        defaultActiveKey="1"
-        onChange={this.changeTabs}
-        tabBarExtraContent={
-          <Button type="primary" icon="plus">新建流水线模板</Button>
-        }
-      >
-        {TabPaneItems}
-      </Tabs>
+      <div>流水线模板</div>
     );
   }
 }
