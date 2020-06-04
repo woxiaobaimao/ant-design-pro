@@ -17,9 +17,9 @@ export function getPipelineList(query) {
   });
 }
 
-export function deletePipelineData(id) {
+export function deletePipelineData(query) {
   return axios({
-    url: '/api/gPipeline/deletePipelineData/' + id,
+    url: '/api/gPipeline/deletePipelineData/' + query,
     method: 'delete',
   })
 }
@@ -35,14 +35,14 @@ export function gPipelineRunpipelineRun(id, obj) {
 
 
 // 任务模板
-export function templateTypeListXXX(query) {
+export async function templateTypeListXXX(query) {
   return axios({
     url: '/api/templateType/list/' + query,
     method: 'get',
   });
 }
 
-export function tTaskTemplatePage(query) {
+export async function tTaskTemplatePage(query) {
   return axios({
     url: '/api/tTaskTemplate/page',
     method: 'get',
@@ -50,14 +50,14 @@ export function tTaskTemplatePage(query) {
   });
 }
 
-export function tTaskTemplategetTaskTemplate(taskId) {
+export async function tTaskTemplategetTaskTemplate(query) {
   return axios({
-    url: '/api/tTaskTemplate/getTaskTemplate/' + taskId,
+    url: '/api/tTaskTemplate/getTaskTemplate/' + query,
     method: 'get'
   })
 }
 
-export function tTaskTemplatedeleteTaskTemplate(obj) {
+export async function tTaskTemplatedeleteTaskTemplate(obj) {
   return axios({
     url: '/api/tTaskTemplate/deleteTaskTemplate',
     method: 'post',

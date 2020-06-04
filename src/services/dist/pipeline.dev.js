@@ -34,9 +34,9 @@ function getPipelineList(query) {
   });
 }
 
-function deletePipelineData(id) {
+function deletePipelineData(query) {
   return (0, _axios["default"])({
-    url: '/api/gPipeline/deletePipelineData/' + id,
+    url: '/api/gPipeline/deletePipelineData/' + query,
     method: 'delete'
   });
 }
@@ -51,31 +51,75 @@ function gPipelineRunpipelineRun(id, obj) {
 
 
 function templateTypeListXXX(query) {
-  return (0, _axios["default"])({
-    url: '/api/templateType/list/' + query,
-    method: 'get'
+  return regeneratorRuntime.async(function templateTypeListXXX$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          return _context.abrupt("return", (0, _axios["default"])({
+            url: '/api/templateType/list/' + query,
+            method: 'get'
+          }));
+
+        case 1:
+        case "end":
+          return _context.stop();
+      }
+    }
   });
 }
 
 function tTaskTemplatePage(query) {
-  return (0, _axios["default"])({
-    url: '/api/tTaskTemplate/page',
-    method: 'get',
-    params: query
+  return regeneratorRuntime.async(function tTaskTemplatePage$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          return _context2.abrupt("return", (0, _axios["default"])({
+            url: '/api/tTaskTemplate/page',
+            method: 'get',
+            params: query
+          }));
+
+        case 1:
+        case "end":
+          return _context2.stop();
+      }
+    }
   });
 }
 
-function tTaskTemplategetTaskTemplate(taskId) {
-  return (0, _axios["default"])({
-    url: '/api/tTaskTemplate/getTaskTemplate/' + taskId,
-    method: 'get'
+function tTaskTemplategetTaskTemplate(query) {
+  return regeneratorRuntime.async(function tTaskTemplategetTaskTemplate$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          return _context3.abrupt("return", (0, _axios["default"])({
+            url: '/api/tTaskTemplate/getTaskTemplate/' + query,
+            method: 'get'
+          }));
+
+        case 1:
+        case "end":
+          return _context3.stop();
+      }
+    }
   });
 }
 
 function tTaskTemplatedeleteTaskTemplate(obj) {
-  return (0, _axios["default"])({
-    url: '/api/tTaskTemplate/deleteTaskTemplate',
-    method: 'post',
-    data: obj
+  return regeneratorRuntime.async(function tTaskTemplatedeleteTaskTemplate$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          return _context4.abrupt("return", (0, _axios["default"])({
+            url: '/api/tTaskTemplate/deleteTaskTemplate',
+            method: 'post',
+            data: obj
+          }));
+
+        case 1:
+        case "end":
+          return _context4.stop();
+      }
+    }
   });
 } // 步骤模板

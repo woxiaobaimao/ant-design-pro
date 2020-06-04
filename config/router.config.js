@@ -54,8 +54,7 @@ export default [
             component: './Dashboard/Workplace',
           },
         ],
-      },
-      // pipeline
+      }, // pipeline
       {
         path: '/pipeline',
         name: 'pipeline',
@@ -70,11 +69,13 @@ export default [
             name: 'pipelineRun',
             path: '/pipeline/pipelineRun',
             component: './pipeline/pipelineList/pipelineRun',
+            hideInMenu: 'true',
           },
           {
             name: 'pipelineEdit',
             path: '/pipeline/pipelineEdit',
             component: './pipeline/pipelineList/pipelineEdit',
+            hideInMenu: 'true',
           },
           {
             name: 'pipelineConfig',
@@ -98,8 +99,7 @@ export default [
             ],
           },
         ],
-      },
-      // forms
+      }, // forms
       {
         path: '/form',
         icon: 'form',
@@ -315,6 +315,11 @@ export default [
             ],
           },
         ],
+      },
+      {
+        name: 'demo',
+        path: '/demo',
+        component: './demo',
       },
       {
         component: '404',

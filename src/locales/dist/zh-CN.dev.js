@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _default = {
+  'menu.demo': '测试页面',
   'menu.pipeline': 'pipeline',
   'menu.pipeline.pipelineList': 'pipeline列表',
   'menu.pipeline.pipelineRun': '流水线运行',

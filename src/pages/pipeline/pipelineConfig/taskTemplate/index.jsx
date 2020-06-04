@@ -38,6 +38,10 @@ const { confirm } = Modal;
 
 @Form.create()
 
+@connect(({ taskTemplate, loading }) => ({
+  taskTemplate
+}))
+
 class CardList extends PureComponent {
   state = {
     typeList: [],
@@ -47,12 +51,13 @@ class CardList extends PureComponent {
       limit: 12,
     },
     total: 0,
-    visible: true,
+    visible: false,
   };
 
 
   // 初始化数据
   initData = () => {
+
     templateTypeListXXX('task_type').then(response => {
       // this.activeKey = 1
       this.setState({
@@ -68,12 +73,24 @@ class CardList extends PureComponent {
       });
     });
 
-    // getPipelineList({}).then(response => {
-    //   this.setState({
-    //     tableData: response.data.data.rows,
-    //     total: response.data.data.total
-    //   });
-    // })
+    const { dispatch } = this.props;
+
+    // dispatch({
+    //   type: 'taskTemplate/initType',
+    //   payload: "task_type",
+    //   callback: (res) => {
+    //     tTaskTemplatePage(this.state.page).then(response => {
+    //       this.setState({
+    //         tableData: response.data.data.rows,
+    //         total: response.data.data.total,
+    //       });
+    //     });
+    //   }
+    // });
+
+    // this.activeKey = 1
+    // this.page.taskType = response.data[0].typeFlag
+
   };
   onClickMenu = (row, { key }) => {
     if (key == 'edit') {
@@ -104,17 +121,16 @@ class CardList extends PureComponent {
       this.setState({
         visible: true
       });
-      console.log(response.data.data);
       notification['success']({
         message: '操作提示',
         description: '编辑成功',
       });
-      // this.initData()
+      this.initData()
     })
   }
 
   handleSubmit = e => {
-    const { dispatch, form } = this.props;
+    const { form } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -137,10 +153,12 @@ class CardList extends PureComponent {
   changeTabs(key) { }
 
   render() {
-
     const {
       form: { getFieldDecorator, getFieldValue },
+      taskTemplate: { type },
     } = this.props;
+
+    console.log(type);
 
     let typeListItems = this.state.typeList.map((item, key) => (
       <Option value="jack" key={key}> Jack</Option>

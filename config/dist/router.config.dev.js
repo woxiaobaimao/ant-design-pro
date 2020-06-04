@@ -60,11 +60,13 @@ var _default = [// user
     }, {
       name: 'pipelineRun',
       path: '/pipeline/pipelineRun',
-      component: './pipeline/pipelineList/pipelineRun'
+      component: './pipeline/pipelineList/pipelineRun',
+      hideInMenu: 'true'
     }, {
       name: 'pipelineEdit',
       path: '/pipeline/pipelineEdit',
-      component: './pipeline/pipelineList/pipelineEdit'
+      component: './pipeline/pipelineList/pipelineEdit',
+      hideInMenu: 'true'
     }, {
       name: 'pipelineConfig',
       path: '/pipeline/pipelineConfig',
@@ -250,6 +252,10 @@ var _default = [// user
         component: './Account/Settings/NotificationView'
       }]
     }]
+  }, {
+    name: 'demo',
+    path: '/demo',
+    component: './demo'
   }, {
     component: '404'
   }]
