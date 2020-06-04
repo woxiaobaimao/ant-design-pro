@@ -20,11 +20,19 @@ import {
   Form,
   Switch,
   Select,
-  notification
+  notification,
+  Checkbox,
+  Radio,
 
 } from 'antd';
 import { EditOutlined, DeleteOutlined, AppleOutlined, AndroidOutlined, SmallDashOutlined } from '@ant-design/icons';
-import { templateTypeListXXX, tTaskTemplatePage, tTaskTemplategetTaskTemplate, tTaskTemplatedeleteTaskTemplate } from '@/services/pipeline';
+import {
+  templateTypeListXXX,
+  tTaskTemplatePage,
+  tTaskTemplategetTaskTemplate,
+  tTaskTemplatedeleteTaskTemplate,
+  tTaskTemplateAddTaskTemplate
+} from '@/services/pipeline';
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
@@ -49,15 +57,17 @@ class CardList extends PureComponent {
     page: {
       page: 1,
       limit: 12,
+      taskName: "",
+      taskType: ""
     },
     total: 0,
-    visible: false,
+    visible: true,
+    title: "新建"
   };
 
 
   // 初始化数据
   initData = () => {
-
     templateTypeListXXX('task_type').then(response => {
       // this.activeKey = 1
       this.setState({
@@ -94,11 +104,16 @@ class CardList extends PureComponent {
   };
   onClickMenu = (row, { key }) => {
     if (key == 'edit') {
-      this.editStep(row.taskId)
+      this.editTask(row.taskId)
     } else {
       this.delStep(row)
     }
   }
+
+  changeJob = () => {
+    console.log('切换job');
+  }
+
   delStep = (row) => {
     confirm({
       title: '提示',
@@ -116,11 +131,22 @@ class CardList extends PureComponent {
       }
     })
   };
-  editStep = (taskId) => {
+  // 编辑展示
+  editTask = (taskId) => {
     tTaskTemplategetTaskTemplate(taskId).then((response) => {
+      console.log(productType);
+      let { productType, taskImage, isJob, taskType, taskName, flowTaskName } = response.data.data
       this.setState({
         visible: true
       });
+      this.props.form.setFieldsValue({
+        isJob,
+        taskType,
+        taskName,
+        flowTaskName
+        // isJob:,
+      });
+
       notification['success']({
         message: '操作提示',
         description: '编辑成功',
@@ -134,7 +160,19 @@ class CardList extends PureComponent {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
+        if (values.isJob == 'true') {
+          values.stepTemplates = []
+        } else {
+          values.paramList = []
+        }
+        tTaskTemplateAddTaskTemplate(values).then(() => {
+          notification['success']({
+            message: '提示',
+            description: '添加成功',
+            duration: 8
+          })
+          this.onClose()
+        })
       }
     });
   };
@@ -146,6 +184,11 @@ class CardList extends PureComponent {
     this.setState({ visible: false });
   };
 
+  changeSearchName = (e) => {
+    this.setState({
+      page: { ...this.state.page, taskName: e.target.value || undefined }
+    });
+  };
 
   componentDidMount() {
     this.initData();
@@ -161,7 +204,7 @@ class CardList extends PureComponent {
     console.log(type);
 
     let typeListItems = this.state.typeList.map((item, key) => (
-      <Option value="jack" key={key}> Jack</Option>
+      <Option value={item.typeFlag} key={key}>{item.typeName}</Option>
     ));
 
     let TabPaneItems = this.state.typeList.map((item, key) => (
@@ -181,7 +224,7 @@ class CardList extends PureComponent {
             dataSource={this.state.tableData}
             renderItem={item => (
               <List.Item key={item.id}>
-                <Card hoverable className={styles.card}>
+                <Card hoverable className={styles.card} onClick={e => { this.editTask(item.taskId) }}>
                   <div style={{ textAlign: 'right' }}>
                     <Dropdown
                       overlay={
@@ -220,12 +263,20 @@ class CardList extends PureComponent {
         <Tabs
           defaultActiveKey="1"
           onChange={this.changeTabs}
-          tabBarExtraContent={<Button type="primary" onClick={this.showDrawer}>新建</Button>}
-        >
+          tabBarExtraContent={
+            <div>
+              <Search
+                placeholder="请输入任务名称"
+                onChange={this.changeSearchName}
+                onSearch={this.initData}
+                style={{ width: 200, marginRight: 10 }}
+              />
+              <Button type="primary" onClick={this.showDrawer}>新建</Button>
+            </div>}>
           {TabPaneItems}
         </Tabs>
         <Drawer
-          title="新建"
+          title={this.state.title}
           visible={this.state.visible}
           placement="right"
           onClose={this.onClose}
@@ -245,37 +296,83 @@ class CardList extends PureComponent {
         >
           <Form layout="vertical">
 
-            <Form.Item label="步骤类型" rules={[{ required: true }]}>
-              {/* <Input /> */}
+            <Form.Item label="步骤类型" >
+              {getFieldDecorator('isJob', {
+                initialValue: 'false',
+                rules: [{ required: true, message: '请选择任务分类', initialValue: 'false' }],
+              })(
+                <Radio.Group onChange={this.changeJob} >
+                  <Radio.Button value="false" style={{ width: 300, textAlign: 'center' }}>非job类</Radio.Button>
+                  <Radio.Button value="true" style={{ width: 300, marginLeft: 20, textAlign: 'center' }}>job类</Radio.Button>
+                </Radio.Group>
+              )}
             </Form.Item>
-            <Form.Item label="添加参数" rules={[{ required: true }]}>
-              {/* <Input /> */}
+            <Form.Item label="添加参数" >
+              <div className={styles.varList}>
+                <Row className={styles.header} gutter={10}>
+                  <Col span={4}>参数key</Col>
+                  <Col span={4}>参数名称</Col>
+                  <Col span={4}>参数类型</Col>
+                  <Col span={8}>默认值</Col>
+                  <Col span={2} style={{ textAlign: 'center' }}>URL</Col>
+                  <Col span={2}></Col>
+                </Row>
+                {/* 参数列表内容 */}
+                <Row className={styles.content} gutter={10}>
+                  <Col span={4}>
+                    <Input placeholder="请输入参数key" />
+                  </Col>
+                  <Col span={4}>
+                    <Input placeholder="请输入参数名称" />
+                  </Col>
+                  <Col span={4}>
+                    <Select placeholder="请选择参数类型">
+                      <Option value="jack">Jack</Option>
+                    </Select>
+                  </Col>
+                  <Col span={8}>
+                    <Input placeholder="请输入默认值" />
+                  </Col>
+                  <Col span={2} style={{ textAlign: 'center' }}>
+                    <Checkbox></Checkbox>
+                  </Col>
+                  {/* <Col span={4}>
+                    <Input placeholder="请输入Url" />
+                  </Col> */}
+                  <Col span={1}>
+                    <Button type="link" icon="delete" style={{ color: 'red' }}></Button>
+                  </Col>
+                </Row>
+              </div>
             </Form.Item>
             <Form.Item label="任务分类" rules={[{ required: true }]}>
-              {getFieldDecorator('type', {
+              {getFieldDecorator('taskType', {
                 rules: [{ required: true, message: '请选择任务分类' }],
               })(<Select placeholder="请选择任务分类">
                 {typeListItems}
               </Select>)}
             </Form.Item>
             <Form.Item label="中文名称">
-              {getFieldDecorator('zn', {
+              {getFieldDecorator('taskName', {
                 rules: [{ required: true, message: '请输入中文名称' }],
               })(<Input placeholder="请输入中文名称" />)}
             </Form.Item>
             <Form.Item label="英文名称">
-              {getFieldDecorator('en', {
+              {getFieldDecorator('flowTaskName', {
                 rules: [{ required: true, message: '请输入英文名称' }],
               })(<Input placeholder="请输入英文名称" />)}
             </Form.Item>
-            <Form.Item name="任务图标" label="任务图标" rules={[{ required: true }]}>
+            <Form.Item label="任务图标" >
               {/* <Input /> */}
             </Form.Item>
-            <Form.Item rules={[{ required: true }]}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Form.Item>
+              {/* {getFieldDecorator('isProduct', {
+                valuePropName: 'checked',
+                rules: [{ required: true, message: '请输入英文名称' }],
+              })(<div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>是否有产出物</span>
                 <Switch checkedChildren="是" unCheckedChildren="否" />
-              </div>
+              </div>)} */}
             </Form.Item>
           </Form>
           <div

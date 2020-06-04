@@ -11,6 +11,7 @@ exports.templateTypeListXXX = templateTypeListXXX;
 exports.tTaskTemplatePage = tTaskTemplatePage;
 exports.tTaskTemplategetTaskTemplate = tTaskTemplategetTaskTemplate;
 exports.tTaskTemplatedeleteTaskTemplate = tTaskTemplatedeleteTaskTemplate;
+exports.tTaskTemplateAddTaskTemplate = tTaskTemplateAddTaskTemplate;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -119,6 +120,25 @@ function tTaskTemplatedeleteTaskTemplate(obj) {
         case 1:
         case "end":
           return _context4.stop();
+      }
+    }
+  });
+}
+
+function tTaskTemplateAddTaskTemplate(obj) {
+  return regeneratorRuntime.async(function tTaskTemplateAddTaskTemplate$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          return _context5.abrupt("return", (0, _axios["default"])({
+            url: '/api/tTaskTemplate/addTaskTemplate',
+            method: 'post',
+            data: obj
+          }));
+
+        case 1:
+        case "end":
+          return _context5.stop();
       }
     }
   });

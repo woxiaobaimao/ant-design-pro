@@ -65,4 +65,12 @@ export async function tTaskTemplatedeleteTaskTemplate(obj) {
   })
 }
 
+export async function tTaskTemplateAddTaskTemplate(obj) {
+  return axios({
+    url: '/api/tTaskTemplate/addTaskTemplate',
+    method: 'post',
+    data: obj
+  })
+}
+
 // 步骤模板
