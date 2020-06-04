@@ -46,7 +46,7 @@ class CardList extends PureComponent {
   };
   // 初始化数据
   initData = () => {
-    getPipelineList({}).then(response => {
+    getPipelineList(this.state.page).then(response => {
       this.setState({
         tableData: response.data.data.rows,
         total: response.data.data.total,
@@ -61,6 +61,20 @@ class CardList extends PureComponent {
     this.setState({ visible: false });
   };
 
+  onChangePage = page => {
+    console.log(page);
+    // this.setState({
+    //   page: { ...this.state.page, page }
+    // });
+    // this.initData()
+  };
+
+  onShowSizeChange = (current, pageSize) => {
+    this.setState({
+      page: { ...this.state.page, limit: pageSize, page: 1 }
+    });
+    this.initData()
+  }
 
   componentDidMount() {
     this.initData();
@@ -112,7 +126,6 @@ class CardList extends PureComponent {
         <div className={styles.cardList}>
           <List
             rowKey="id"
-            loading={loading}
             grid={{ gutter: 24, lg: 4, md: 2, sm: 1, xs: 1 }}
             dataSource={this.state.tableData}
             renderItem={item => (
@@ -156,7 +169,13 @@ class CardList extends PureComponent {
           />
         </div>
 
-        <Pagination style={{ float: 'right' }} />
+        <Pagination style={{ float: 'right' }}
+          current={this.state.page.page}
+          total={this.state.total} onChange={this.onChangePage}
+          showSizeChanger onShowSizeChange={this.onShowSizeChange}
+          defaultPageSize={12}
+          pageSizeOptions={['12', '24', '36', '48']}
+        />
 
         <Drawer
           title="新建"

@@ -190,6 +190,20 @@ class CardList extends PureComponent {
     });
   };
 
+  onChangePage = page => {
+    this.setState({
+      page: { ...this.state.page, page }
+    });
+    this.initData()
+  };
+
+  onShowSizeChange = (current, pageSize) => {
+    this.setState({
+      page: { ...this.state.page, limit: pageSize, page: 1 }
+    });
+    this.initData()
+  }
+
   componentDidMount() {
     this.initData();
   }
@@ -220,7 +234,7 @@ class CardList extends PureComponent {
         <div className={styles.cardList}>
           <List
             rowKey="id"
-            grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+            grid={{ gutter: 24, lg: 4 }}
             dataSource={this.state.tableData}
             renderItem={item => (
               <List.Item key={item.id}>
@@ -254,7 +268,13 @@ class CardList extends PureComponent {
           />
         </div>
 
-        <Pagination style={{ float: 'right' }} />
+        <Pagination style={{ float: 'right' }}
+          current={this.state.page.page}
+          total={this.state.total} onChange={this.onChangePage}
+          showSizeChanger onShowSizeChange={this.onShowSizeChange}
+          defaultPageSize={12}
+          pageSizeOptions={['12', '24', '36', '48']}
+        />
       </TabPane>
     ));
 
