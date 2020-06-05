@@ -167,15 +167,15 @@ class CardList extends PureComponent {
                       <div>{item.serviceName}</div>
                     </Tooltip>
                   </div>
-                  <StepList></StepList>
+                  <StepList stepList={item.phaseRunRecordVos}></StepList>
                   <Divider />
                   <div className={styles.time}>
                     <div>
-                      <Icon type="user" /> {item.runPerson}
+                      <Icon type="user" /> {item.runPerson || '~'}
                     </div>
                     <Divider type="vertical" />
                     <div>
-                      <Icon type="user" />
+                      <Icon type="user" style={{ paddingRight: 10 }} />
                       {item.lastRunTime}
                     </div>
                   </div>

@@ -374,6 +374,9 @@ class CardList extends PureComponent {
                     <Button type="link" icon="delete" style={{ color: 'red' }}></Button>
                   </Col>
                 </Row>
+                <div>
+                  <Button>新增一行</Button>
+                </div>
               </div>
             </Form.Item>
             <Form.Item label="任务分类" rules={[{ required: true }]}>

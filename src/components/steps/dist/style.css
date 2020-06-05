@@ -1,5 +1,6 @@
 .stepClass {
-  height: 30px;
+  padding-top: 15px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,13 +9,14 @@
   width: 13px;
   height: 14px;
 }
-.stepClass .stateIcon .text {
+.stepClass .text {
   position: absolute;
-  transform: translate(-35%, -25px);
+  font-size: 13px;
+  transform: translate(-35%, -43px);
 }
 .stepClass .line {
   width: 57px;
   height: 1px;
-  margin-top: -1px;
+  margin-top: 2px;
   background: #cfcfcf;
 }
