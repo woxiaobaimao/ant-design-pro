@@ -36,6 +36,7 @@ const { Option } = Select;
 }))
 class CardList extends PureComponent {
   state = {
+    title: '新建',
     tableData: [],
     page: {
       page: 1,
@@ -62,11 +63,10 @@ class CardList extends PureComponent {
   };
 
   onChangePage = page => {
-    console.log(page);
-    // this.setState({
-    //   page: { ...this.state.page, page }
-    // });
-    // this.initData()
+    this.setState({
+      page: { ...this.state.page, page }
+    });
+    this.initData()
   };
 
   onShowSizeChange = (current, pageSize) => {
@@ -118,8 +118,8 @@ class CardList extends PureComponent {
               style={{ width: 200, marginLeft: 10 }}
             />
           </div>
-          <Button type="primary" onClick={this.showDrawer}>
-            新建流水线
+          <Button type="primary" onClick={this.showDrawer} icon="plus">
+            新建步骤
           </Button>
         </div>
 
@@ -178,7 +178,7 @@ class CardList extends PureComponent {
         />
 
         <Drawer
-          title="新建"
+          title={this.state.title}
           visible={this.state.visible}
           placement="right"
           onClose={this.onClose}
@@ -197,33 +197,33 @@ class CardList extends PureComponent {
           }
         >
           <Form hideRequiredMark >
-            <Form.Item name="步骤类型" label="步骤脚本" rules={[{ required: true }]}>
-              <Input placeholder="请输入步骤脚本" />
+            <Form.Item label="步骤脚本">
+              
             </Form.Item>
-            <Form.Item name="添加参数" label="步骤名称" rules={[{ required: true }]}>
+            <Form.Item label="步骤名称">
               <Input placeholder="请输入步骤名称" />
             </Form.Item>
-            <Form.Item name="任务分类" label="步骤描述" rules={[{ required: true }]}>
-              <Input placeholder="请输入步骤描述" />
+            <Form.Item label="步骤描述">
+
             </Form.Item>
-            <Form.Item name="中文名称" label="分类" rules={[{ required: true }]}>
+            <Form.Item label="分类">
               <Select placeholder="请选择分类">
                 <Option value="jack">Jack</Option>
               </Select>
             </Form.Item>
-            <Form.Item rules={[{ required: true }]}>
+            <Form.Item>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>是否可见</span>
                 <Switch checkedChildren="是" unCheckedChildren="否" />
               </div>
             </Form.Item>
-            <Form.Item rules={[{ required: true }]}>
+            <Form.Item>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>是否添加红线</span>
                 <Switch checkedChildren="是" unCheckedChildren="否" />
               </div>
             </Form.Item>
-            <Form.Item name="添加参数" label="添加参数" rules={[{ required: true }]}>
+            <Form.Item label="添加参数">
               <div className={styles.varList}>
                 <Row className={styles.header} gutter={10}>
                   <Col span={4}>参数key</Col>

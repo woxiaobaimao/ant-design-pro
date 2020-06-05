@@ -152,22 +152,49 @@ class CardList extends PureComponent {
                           <MenuFoldOutlined style={{ paddingRight: 10 }}></MenuFoldOutlined>代码扫描
                         </div>
                         <div className={styles.taskList}>
+
                           <div className={styles.verticalLine}></div>
                           <div className={styles.subBlock}>
-
+                            自动
                           </div>
-                          <div className={styles.line} style={{ marginTop: '164px' }}>
+                          <div className={styles.line} style={{ marginTop: 164 }}> </div>
 
-                          </div>
-                          {/* 关键任务数组 */}
                           <div className={styles.taskItem}>
-
+                            <div style={{ display: 'flex' }}>
+                              {/* 成功卡片 */}
+                              {/* <div className={styles.runCard}>
+                                <div styles={styles.header}>
+                                  <span>SonarQube</span>
+                                </div>
+                                <div styles={styles.body}>
+                                  部署失败，请查看部署详情
+                                </div>
+                              </div> */}
+                              {/* 失败卡片 */}
+                              <div className={styles.runCard}>
+                                <div styles={styles.cardHeader}>
+                                  <span>SonarQube</span>
+                                </div>
+                                <div className={styles.cardBody}>
+                                  部署失败，请查看部署详情
+                                </div>
+                                <div className={styles.cardFooter}>
+                                  <div className={styles.footerLeft}>
+                                    <div>日志</div>
+                                    <div>重试</div>
+                                    <div>部署详情</div>
+                                    <div>扫描报告</div>
+                                  </div>
+                                  <div>30秒</div>
+                                </div>
+                              </div>
+                              <div className={styles.line} style={{ marginTop: 164 }}></div>
+                              <div className={styles.circle} style={{ marginTop: 160 }}></div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className={styles.line}>
-
-                      </div>
+                      <div className={styles.line} style={{ position: 'absolute', width: '100%' }}></div>
                     </div>
                     <div className={styles.circle}></div>
                   </div>

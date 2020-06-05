@@ -26,9 +26,8 @@ const { TabPane } = Tabs;
 
 class StepList extends PureComponent {
 
-  click(item) {
-    // this.$emit('change', icon)
-    console.log(item);
+  click(icon) {
+    this.props.getIconLabel(icon)
   }
 
   render() {

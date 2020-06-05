@@ -30,6 +30,9 @@
   position: relative;
   z-index: 99;
 }
+.drawBg .draw .phase .listAll {
+  z-index: 99;
+}
 .drawBg .draw .phase .listAll .superBlock {
   width: 238px;
   height: 40px;
@@ -43,10 +46,10 @@
 }
 .drawBg .draw .phase .listAll .taskList {
   display: flex;
-  margin-top: -70px;
+  margin-top: -36px;
 }
 .drawBg .draw .phase .listAll .taskList .verticalLine {
-  background: url("/public/verticalLine.svg") left no-repeat;
+  background: url("@/assets/verticalLine.svg") left no-repeat;
   margin-left: 10px;
   width: 32px;
   height: 164px;
@@ -62,6 +65,47 @@
   background-color: #ffffff;
   margin-top: 147px;
   padding: 0 10px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard {
+  height: 130px;
+  border-top: 3px solid;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 117px;
+  min-width: 280px;
+  padding: 0 20px;
+  position: relative;
+  font-size: 12px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardHeader {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardHeader span {
+  padding-left: 10px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardBody {
+  padding: 10px 0;
+  text-align: center;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter {
+  display: flex;
+  justify-content: space-between;
+  color: #8c8c8c;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter .footerLeft {
+  display: flex;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter div {
+  cursor: pointer;
+  padding-left: 7px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter div span {
+  padding-left: 5px;
 }
 .drawBg .draw .phaseALine {
   width: 100px;

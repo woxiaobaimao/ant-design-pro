@@ -72,12 +72,17 @@ class StepList extends PureComponent {
         <div style={{ height: 600, overflowX: 'hidden', overflowY: 'auto' }}>
           <List grid={{ gutter: 16, column: 1 }}
             dataSource={this.state.pipelineList}
-            renderItem={item => (
+            renderItem={item2 => (
               <List.Item>
                 <Card className={styles.card} bodyStyle={{ padding: 0 }} >
-                  <div> <AppleOutlined></AppleOutlined> {item.pipelineName}</div>
+                  <div><AppleOutlined></AppleOutlined> {item2.pipelineName}</div>
                   <div className={styles.draw}>
-                    {/* {item.phases.map((item, key) => (12))} */}
+                    {/* {item.phases} */}
+                    {/* {item.phases.map((phaseItem, key2) => (
+                      <div key={key2}>
+                        1
+                      </div>
+                    ))} */}
                     <div className={styles.block} >
                       <div>
                         <div >

@@ -56,6 +56,7 @@ class CardList extends PureComponent {
   state = {
     typeList: [],
     listCard: [],
+    productTypeList: [],
     page: {
       page: 1,
       limit: 12,
@@ -63,7 +64,7 @@ class CardList extends PureComponent {
       taskType: ""
     },
     total: 0,
-    visible: true,
+    visible: false,
     title: "新建",
     dialogIconVisible: false
   };
@@ -113,10 +114,6 @@ class CardList extends PureComponent {
     }
   }
 
-  changeJob = () => {
-    console.log('切换job');
-  }
-
   delStep = (row) => {
     confirm({
       title: '提示',
@@ -137,9 +134,10 @@ class CardList extends PureComponent {
   // 编辑展示
   editTask = (taskId) => {
     tTaskTemplategetTaskTemplate(taskId).then((response) => {
-      console.log(productType);
-      let { productType, taskImage, isJob, taskType, taskName, flowTaskName } = response.data.data
+      this.getproductType()
+      let { isJob, paramList, stepTemplates, taskType, taskName, flowTaskName, taskImage, isProduct, productType } = response.data.data
       this.setState({
+        title: '编辑',
         visible: true
       });
       this.props.form.setFieldsValue({
@@ -147,9 +145,12 @@ class CardList extends PureComponent {
         taskType,
         taskName,
         flowTaskName,
-        taskImage
-        // isJob:,
+        taskImage,
+        isProduct,
+        productType
       });
+      isJob ? this.props.form.setFieldsValue({ stepTemplates })
+        : this.props.form.setFieldsValue({ paramList })
     })
   }
 
@@ -158,11 +159,7 @@ class CardList extends PureComponent {
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        if (values.isJob == 'true') {
-          values.stepTemplates = []
-        } else {
-          values.paramList = []
-        }
+        values.isJob = values.isJob == 'true' ? 1 : 0
         tTaskTemplateAddTaskTemplate(values).then(() => {
           notification['success']({
             message: '提示',
@@ -175,17 +172,26 @@ class CardList extends PureComponent {
     });
   };
 
-  showDrawer = () => {
-    this.setState({ visible: true });
+  addTask = () => {
+    this.setState({
+      title: '新建',
+      visible: true
+    });
   };
-  // 保存
-  create = () => {
-    this.setState({ visible: false });
-  };
+
   // 取消
   onClose = () => {
+    let { form } = this.props
+    form.resetFields()
     this.setState({ visible: false });
   };
+
+  getproductType() {
+    templateTypeListXXX('product_type')
+      .then(response => {
+        this.setState({ productTypeList: response.data.data });
+      })
+  }
 
   changeSearchName = (e) => {
     this.setState({
@@ -212,6 +218,37 @@ class CardList extends PureComponent {
   }
   changeTabs(key) { }
 
+  addLine = () => {
+
+    const { form } = this.props;
+    const keys = form.getFieldValue('keys');
+    const nextLine = keys.concat({ name: '', label: '' });
+    form.setFieldsValue({
+      keys: nextLine,
+    });
+  };
+
+  remove = k => {
+    const { form } = this.props;
+    const keys = form.getFieldValue('keys');
+    if (keys.length === 1) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  };
+
+  getIconLabel(icon) {
+    const { form } = this.props;
+    form.setFieldsValue({
+      taskImage: icon
+    });
+    this.closeIconSelect()
+  }
+
   openIconSelect = () => {
     this.setState({ dialogIconVisible: true });
   }
@@ -224,6 +261,8 @@ class CardList extends PureComponent {
       form: { getFieldDecorator, getFieldValue },
       taskTemplate: { type },
     } = this.props;
+
+    // 表单参数列表
 
 
     let typeListItems = this.state.typeList.map((item, key) => (
@@ -302,7 +341,7 @@ class CardList extends PureComponent {
                 onSearch={this.initData}
                 style={{ width: 200, marginRight: 10 }}
               />
-              <Button type="primary" onClick={this.showDrawer}>新建</Button>
+              <Button type="primary" icon="plus" onClick={this.addTask}>新建任务</Button>
             </div>}>
           {TabPaneItems}
         </Tabs>
@@ -312,18 +351,6 @@ class CardList extends PureComponent {
           placement="right"
           onClose={this.onClose}
           width="45%"
-          footer={
-            <div
-              style={{ textAlign: 'right' }}
-            >
-              <Button onClick={this.save} type="primary">
-                保存
-              </Button>
-              <Button onClick={this.onClose} style={{ marginRight: 8 }}>
-                取消
-              </Button>
-            </div>
-          }
         >
           <Form layout="vertical">
 
@@ -332,53 +359,27 @@ class CardList extends PureComponent {
                 initialValue: 'false',
                 rules: [{ required: true, message: '请选择任务分类', initialValue: 'false' }],
               })(
-                <Radio.Group onChange={this.changeJob} >
+                <Radio.Group>
                   <Radio.Button value="false" style={{ width: 300, textAlign: 'center' }}>非job类</Radio.Button>
                   <Radio.Button value="true" style={{ width: 300, marginLeft: 20, textAlign: 'center' }}>job类</Radio.Button>
                 </Radio.Group>
               )}
             </Form.Item>
-            <Form.Item label="添加参数" >
-              <div className={styles.varList}>
-                <Row className={styles.header} gutter={10}>
-                  <Col span={4}>参数key</Col>
-                  <Col span={4}>参数名称</Col>
-                  <Col span={4}>参数类型</Col>
-                  <Col span={8}>默认值</Col>
-                  <Col span={2} style={{ textAlign: 'center' }}>URL</Col>
-                  <Col span={2}></Col>
-                </Row>
-                {/* 参数列表内容 */}
-                <Row className={styles.content} gutter={10}>
-                  <Col span={4}>
-                    <Input placeholder="请输入参数key" />
-                  </Col>
-                  <Col span={4}>
-                    <Input placeholder="请输入参数名称" />
-                  </Col>
-                  <Col span={4}>
-                    <Select placeholder="请选择参数类型">
-                      <Option value="jack">Jack</Option>
-                    </Select>
-                  </Col>
-                  <Col span={8}>
-                    <Input placeholder="请输入默认值" />
-                  </Col>
-                  <Col span={2} style={{ textAlign: 'center' }}>
-                    <Checkbox></Checkbox>
-                  </Col>
-                  {/* <Col span={4}>
-                    <Input placeholder="请输入Url" />
-                  </Col> */}
-                  <Col span={1}>
-                    <Button type="link" icon="delete" style={{ color: 'red' }}></Button>
-                  </Col>
-                </Row>
-                <div>
-                  <Button>新增一行</Button>
-                </div>
-              </div>
-            </Form.Item>
+            {
+              getFieldValue('isJob') === 'false' ?
+                <Form.Item label="添加参数">
+                  {getFieldDecorator('paramList', {
+                  })(
+                    <Input></Input>
+                  )}
+                </Form.Item> :
+                <Form.Item label="步骤列表">
+                  {getFieldDecorator('stepTemplates', {
+                  })(
+                    <Input></Input>
+                  )}
+                </Form.Item>
+            }
             <Form.Item label="任务分类" rules={[{ required: true }]}>
               {getFieldDecorator('taskType', {
                 rules: [{ required: true, message: '请选择任务分类' }],
@@ -397,30 +398,40 @@ class CardList extends PureComponent {
               })(<Input placeholder="请输入英文名称" />)}
             </Form.Item>
             <Form.Item label="任务图标">
-
               {getFieldDecorator('taskImage', {
-                rules: [{ required: true, message: '请输入英文名称' }],
               })(
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <svg style={{
                     fontSize: 36, width: 36,
                     height: 36
                   }}>
-                    <use xlinkHref={'#' + this.props.form.getFieldValue('taskImage')}></use>
+                    <use xlinkHref={'#' + (this.props.form.getFieldValue('taskImage') || 'dp_docker')}></use>
                   </svg>
                   <Button onClick={this.openIconSelect} style={{ marginLeft: 10 }}>点击更换</Button>
                 </div>
               )}
             </Form.Item>
-            <Form.Item>
-              {/* {getFieldDecorator('isProduct', {
+            <Form.Item label="是否有产出物" labelCol={{ span: 22 }}>
+              {getFieldDecorator('isProduct', {
                 valuePropName: 'checked',
-                rules: [{ required: true, message: '请输入英文名称' }],
-              })(<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>是否有产出物</span>
-                <Switch checkedChildren="是" unCheckedChildren="否" />
-              </div>)} */}
+                initialValue: false,
+              })(<Switch checkedChildren="是" unCheckedChildren="否" />)}
             </Form.Item>
+
+            {
+              getFieldValue('isProduct') &&
+              <Form.Item>
+                {getFieldDecorator('productType', {
+                  rules: [{ required: true, message: '请选择任务分类' }],
+                })(<Select placeholder="请选择任务分类" >
+                  {
+                    this.state.productTypeList.map((item, key) => (
+                      <Option key={key} value={item.typeFlag}>{item.typeName}</Option>
+                    ))
+                  }
+                </Select>)}
+              </Form.Item>
+            }
           </Form>
           <div
             style={{
@@ -453,7 +464,7 @@ class CardList extends PureComponent {
             </Button>
           ]}
         >
-          <IconSelect></IconSelect>
+          <IconSelect getIconLabel={type => this.getIconLabel(type)}></IconSelect>
         </Modal>
       </PageHeaderWrapper >
     );
