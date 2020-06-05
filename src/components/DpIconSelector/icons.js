@@ -1,0 +1,18 @@
+export default [
+  {
+    title: '语言框架脚本类',
+    icons: ['dp_Cyuyan-copy','dp_c', 'dp_go', 'dp_java','dp_Groovy','dp_ansible','dp_bat','dp_sql','dp_vscode','dp_js','dp_Java','dp_android', 'dp_python', 'dp_ios','dp_spring','dp_html','dp_nodejs', 'dp_php', 'dp_react', 'dp_vue']
+  },
+  {
+    title: '工具类',
+    icons: ['dp_bitbucket', 'dp_git', 'dp_gitlab', 'dp_docker', 'dp_ks', 'dp_vmware', 'dp_helm', 'dp_harbor', 'dp_jfrogartifactory', 'dp_nexus', 'dp_maven', 'dp_npm', 'dp_yarn', 'dp_jfrogxray', 'dp_sonarqube', 'dp_jenkins','dp_rancher-cow','dp_devops','dp_eslint','dp_Gradle','dp_Jira','dp_JMeter','dp_SubVersion','dp_logo-gitee-g-red','dp_SVN','dp_if_XCode_-copy']
+  },
+  {
+    title: '软件类',
+    icons: ['dp_postgresql', 'dp_db', 'dp_SQLServer','dp_method-draw-image','dp_Apache', 'dp_tomcat', 'dp_jetty', 'dp_spark', 'dp_yab_h_oracle', 'dp_MySQL-icon', 'dp_redis', 'dp_nomad', 'dp_rocket', 'dp_cc-mongodb', 'dp_RabbitMQ--activeX', 'dp_ElasticSearch', 'dp_tuceng-6', 'dp_tuceng-7','dp_kafka']
+  },
+  {
+    title: '其他',
+    icons: ['dp_zidonghuaceshi-UI','dp_zidonghuaceshi-api','dp_anquansaomiao', 'dp_minglinghang', 'dp_rengongjiedian', 'dp_laqudaima', 'dp_shenpijiedian', 'dp_zhujibushu','dp_shangchuan','dp_xunjian','dp_wechat','dp_dingding','dp_xiaoxi-','dp_youjian','dp_beifenxueshengjiaoshiyunpan','dp_peizhiwenjian','dp_genshuixueicon_huabanfuben','dp_anquansaomiao']
+  }
+]

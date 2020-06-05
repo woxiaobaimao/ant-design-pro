@@ -23,9 +23,12 @@ import {
   notification,
   Checkbox,
   Radio,
-
 } from 'antd';
-import { EditOutlined, DeleteOutlined, AppleOutlined, AndroidOutlined, SmallDashOutlined } from '@ant-design/icons';
+import {
+  createFromIconfontCN,
+  EditOutlined, DeleteOutlined, AppleOutlined,
+  AndroidOutlined, SmallDashOutlined
+} from '@ant-design/icons';
 import {
   templateTypeListXXX,
   tTaskTemplatePage,
@@ -33,9 +36,8 @@ import {
   tTaskTemplatedeleteTaskTemplate,
   tTaskTemplateAddTaskTemplate
 } from '@/services/pipeline';
-
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-
+import IconSelect from '@/components/IconSelect';
 import styles from './style.less';
 
 const FormItem = Form.Item;
@@ -62,7 +64,8 @@ class CardList extends PureComponent {
     },
     total: 0,
     visible: true,
-    title: "新建"
+    title: "新建",
+    dialogIconVisible: false
   };
 
 
@@ -143,15 +146,10 @@ class CardList extends PureComponent {
         isJob,
         taskType,
         taskName,
-        flowTaskName
+        flowTaskName,
+        taskImage
         // isJob:,
       });
-
-      notification['success']({
-        message: '操作提示',
-        description: '编辑成功',
-      });
-      this.initData()
     })
   }
 
@@ -180,6 +178,11 @@ class CardList extends PureComponent {
   showDrawer = () => {
     this.setState({ visible: true });
   };
+  // 保存
+  create = () => {
+    this.setState({ visible: false });
+  };
+  // 取消
   onClose = () => {
     this.setState({ visible: false });
   };
@@ -209,13 +212,19 @@ class CardList extends PureComponent {
   }
   changeTabs(key) { }
 
+  openIconSelect = () => {
+    this.setState({ dialogIconVisible: true });
+  }
+  closeIconSelect = () => {
+    this.setState({ dialogIconVisible: false });
+  }
+
   render() {
     const {
       form: { getFieldDecorator, getFieldValue },
       taskTemplate: { type },
     } = this.props;
 
-    console.log(type);
 
     let typeListItems = this.state.typeList.map((item, key) => (
       <Option value={item.typeFlag} key={key}>{item.typeName}</Option>
@@ -257,7 +266,9 @@ class CardList extends PureComponent {
                     </Dropdown>
                   </div>
 
-                  {/* 图标 */}
+                  <svg style={{ fontSize: 56, width: 56, height: 56 }}>
+                    <use xlinkHref={'#' + item.taskImage}></use>
+                  </svg>
 
                   <div>{item.taskName}</div>
 
@@ -305,10 +316,10 @@ class CardList extends PureComponent {
             <div
               style={{ textAlign: 'right' }}
             >
-              <Button onClick={this.onClose} type="primary">
+              <Button onClick={this.save} type="primary">
                 保存
               </Button>
-              <Button onClick={this.save} style={{ marginRight: 8 }}>
+              <Button onClick={this.onClose} style={{ marginRight: 8 }}>
                 取消
               </Button>
             </div>
@@ -382,8 +393,21 @@ class CardList extends PureComponent {
                 rules: [{ required: true, message: '请输入英文名称' }],
               })(<Input placeholder="请输入英文名称" />)}
             </Form.Item>
-            <Form.Item label="任务图标" >
-              {/* <Input /> */}
+            <Form.Item label="任务图标">
+
+              {getFieldDecorator('taskImage', {
+                rules: [{ required: true, message: '请输入英文名称' }],
+              })(
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <svg style={{
+                    fontSize: 36, width: 36,
+                    height: 36
+                  }}>
+                    <use xlinkHref={'#' + this.props.form.getFieldValue('taskImage')}></use>
+                  </svg>
+                  <Button onClick={this.openIconSelect} style={{ marginLeft: 10 }}>点击更换</Button>
+                </div>
+              )}
             </Form.Item>
             <Form.Item>
               {/* {getFieldDecorator('isProduct', {
@@ -416,6 +440,18 @@ class CardList extends PureComponent {
           </div>
         </Drawer >
 
+        <Modal
+          title="图片选择"
+          visible={this.state.dialogIconVisible}
+          onCancel={this.closeIconSelect}
+          footer={[
+            <Button key="back" onClick={this.closeIconSelect}>
+              取消
+            </Button>
+          ]}
+        >
+          <IconSelect></IconSelect>
+        </Modal>
       </PageHeaderWrapper >
     );
   }
