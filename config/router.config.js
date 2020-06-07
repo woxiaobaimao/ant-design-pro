@@ -96,6 +96,12 @@ export default [
                 path: '/pipeline/pipelineConfig/pipelineTemplate',
                 component: './pipeline/pipelineConfig/pipelineTemplate',
               },
+              {
+                name: 'pipelineTemplateDraw',
+                path: '/pipeline/pipelineConfig/pipelineTemplateDraw',
+                component: './pipeline/pipelineConfig/pipelineTemplateDraw',
+                hideInMenu: 'true',
+              }
             ],
           },
         ],

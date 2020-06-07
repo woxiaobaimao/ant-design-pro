@@ -7,8 +7,15 @@
 }
 .step .card .draw {
   margin-top: 20px;
+  display: flex;
+  margin-top: 32px;
 }
-.step .card .draw .block {
+.step .card .draw .stage {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+.step .card .draw .stage .block {
   width: 100px;
   height: 40px;
   border-radius: 4px;
@@ -19,9 +26,33 @@
   border-radius: 8px;
   color: rgba(27, 27, 27, 0.6);
 }
-.step .card .draw .line {
+.step .card .draw .stage .line {
   width: 40px;
   height: 1px;
   border-top: solid #c5c8cb 1px;
-  margin-top: 5px;
+  margin-top: 6px;
+}
+.step .card .draw .stage .line::before {
+  content: " ";
+  position: absolute;
+  right: 36px;
+  top: 20px;
+  width: 7px;
+  height: 7px;
+  background-color: #acb0b6;
+  border-radius: 4px;
+}
+.step .card .draw .stage .line::after {
+  content: " ";
+  position: absolute;
+  right: -2px;
+  top: 20px;
+  z-index: 9;
+  width: 7px;
+  height: 7px;
+  background-color: #acb0b6;
+  border-radius: 4px;
+}
+.step .card .draw .stage:last-child .line {
+  display: none;
 }

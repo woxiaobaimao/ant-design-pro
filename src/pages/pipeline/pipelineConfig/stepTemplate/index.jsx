@@ -114,7 +114,7 @@ class CardList extends PureComponent {
             </Select>
             <Search
               placeholder="请输入步骤模板名称"
-              onSearch={value => console.log(value)}
+              onSearch={this.initData}
               style={{ width: 200, marginLeft: 10 }}
             />
           </div>
@@ -198,7 +198,7 @@ class CardList extends PureComponent {
         >
           <Form hideRequiredMark >
             <Form.Item label="步骤脚本">
-              
+
             </Form.Item>
             <Form.Item label="步骤名称">
               <Input placeholder="请输入步骤名称" />

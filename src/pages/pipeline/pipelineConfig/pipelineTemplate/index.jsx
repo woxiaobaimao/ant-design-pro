@@ -50,7 +50,17 @@ class CardList extends PureComponent {
       visible: true,
     });
   };
+  gotoEditor = (id) => {
+    // this.isModel = false
+    // this.isAdd = false
+    // this.pipelineId = id
+    // this.getPashList(id)
+    this.props.history.push({
+      pathname: '/pipeline/pipelineConfig/pipelineTemplateDraw',
+      state: { pipelineId: 1 }
+    })
 
+  }
   handleOk = () => {
     this.setState({ loading: true });
     setTimeout(() => {
@@ -74,9 +84,9 @@ class CardList extends PureComponent {
     } = this.props;
 
     return (
-      <PageHeaderWrapper title="卡片列表">
+      <PageHeaderWrapper title="pipeline模板">
         <Card>
-          <PipelineTemplate></PipelineTemplate>
+          <PipelineTemplate showAdd clickBack={this.gotoEditor.bind(this)}></PipelineTemplate>
         </Card>
       </PageHeaderWrapper>
     );

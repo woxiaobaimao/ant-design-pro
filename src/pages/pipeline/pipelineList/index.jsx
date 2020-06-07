@@ -19,7 +19,8 @@ import { SearchOutlined, BlockOutlined, StarFilled, CloseCircleOutlined } from '
 import {
   getPipelineList,
   deletePipelineData,
-  gPipelineRunpipelineRun
+  gPipelineRunpipelineRun,
+  ePipelineCreatePipeline
 } from '@/services/pipeline';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './style.less';
@@ -36,6 +37,7 @@ class CardList extends PureComponent {
     page: {
       page: 1,
       limit: 12,
+      pipelineName: undefined
     },
     total: 0,
     visible: false,
@@ -49,6 +51,31 @@ class CardList extends PureComponent {
       });
     });
   };
+  clickBack = (id) => {
+    this.createLine(id)
+    this.handleCancel()
+  }
+
+  // 克隆pipeline
+  createLine(id) {
+    ePipelineCreatePipeline(id).then(response => {
+      this.gotoEditor(response.data.data)
+    })
+  }
+
+  onChangePage = page => {
+    this.setState({
+      page: { ...this.state.page, page }
+    });
+    this.initData()
+  };
+
+  onShowSizeChange = (current, pageSize) => {
+    this.setState({
+      page: { ...this.state.page, limit: pageSize, page: 1 }
+    });
+    this.initData()
+  }
 
   changeSearchName = (e) => {
     this.setState({
@@ -206,7 +233,13 @@ class CardList extends PureComponent {
           />
         </div>
 
-        <Pagination style={{ float: 'right', marginTop: 20 }} current={this.state.page.page} showSizeChanger pageSizeOptions={['12', '24', '36', '48']} total={this.state.total} />
+        <Pagination style={{ float: 'right', marginTop: 20 }}
+          current={this.state.page.page}
+          total={this.state.total} onChange={this.onChangePage}
+          showSizeChanger onShowSizeChange={this.onShowSizeChange}
+          defaultPageSize={12}
+          pageSizeOptions={['12', '24', '36', '48']}
+        />
 
         {/* 选择流水线模板 */}
         <Modal
@@ -221,7 +254,7 @@ class CardList extends PureComponent {
             </Button>
           ]}
         >
-          <PipelineTemplate></PipelineTemplate>
+          <PipelineTemplate showAdd={false} clickBack={this.clickBack.bind(this)}></PipelineTemplate>
         </Modal>
       </PageHeaderWrapper>
     );

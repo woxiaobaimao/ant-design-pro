@@ -4,9 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.tPipelineTemplateFindByType = tPipelineTemplateFindByType;
+exports.tPipelineTemplateId = tPipelineTemplateId;
+exports.deleteTemplate = deleteTemplate;
 exports.getPipelineList = getPipelineList;
 exports.deletePipelineData = deletePipelineData;
 exports.gPipelineRunpipelineRun = gPipelineRunpipelineRun;
+exports.ePipelineCreatePipeline = ePipelineCreatePipeline;
 exports.templateTypeListXXX = templateTypeListXXX;
 exports.tTaskTemplatePage = tTaskTemplatePage;
 exports.tTaskTemplategetTaskTemplate = tTaskTemplategetTaskTemplate;
@@ -23,6 +26,20 @@ function tPipelineTemplateFindByType(query) {
     url: '/api/tPipelineTemplate/findByType',
     method: 'get',
     params: query
+  });
+}
+
+function tPipelineTemplateId(id) {
+  return (0, _axios["default"])({
+    url: '/pipeline/tPipelineTemplate/' + id,
+    method: 'post'
+  });
+}
+
+function deleteTemplate(id) {
+  return (0, _axios["default"])({
+    url: '/api///tPipelineTemplate/' + id,
+    method: 'get'
   });
 } // 流水线列表
 
@@ -45,6 +62,14 @@ function deletePipelineData(query) {
 function gPipelineRunpipelineRun(id, obj) {
   return (0, _axios["default"])({
     url: '/api/gPipeline/pipelineRun/' + id,
+    method: 'post',
+    data: obj
+  });
+}
+
+function ePipelineCreatePipeline(id, obj) {
+  return (0, _axios["default"])({
+    url: '/api/ePipeline/createPipeline/' + id,
     method: 'post',
     data: obj
   });

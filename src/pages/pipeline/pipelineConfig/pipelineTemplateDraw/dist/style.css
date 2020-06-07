@@ -1,0 +1,173 @@
+.drawBg {
+  background-color: #f6f7f9;
+  color: #333;
+  padding: 40px 0 0 20px;
+  height: 600px;
+  overflow-x: auto;
+}
+.drawBg .drawTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.drawBg .drawTitle .drawButtons * {
+  margin-right: 20px;
+}
+.drawBg .draw {
+  margin-top: 40px;
+  display: -webkit-box;
+}
+.drawBg .draw .circle {
+  width: 10px;
+  height: 10px;
+  background: #787f88;
+  border-radius: 50%;
+  border: 1px solid #787f88;
+}
+.drawBg .draw .line {
+  width: 70px;
+  height: 1px;
+  border-top: solid #c5c8cb 1px;
+  margin-top: 5px;
+}
+.drawBg .draw .phase {
+  display: flex;
+  position: relative;
+  z-index: 99;
+}
+.drawBg .draw .phase .listAll {
+  z-index: 99;
+}
+.drawBg .draw .phase .listAll .superBlock {
+  width: 238px;
+  height: 40px;
+  border-radius: 4px;
+  padding-left: 10px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  margin-top: -13px;
+  justify-content: flex-start;
+}
+.drawBg .draw .phase .listAll .taskList {
+  display: flex;
+  margin-top: -36px;
+}
+.drawBg .draw .phase .listAll .taskList .verticalLine {
+  background: url("@/assets/verticalLine.svg") left no-repeat;
+  margin-left: 10px;
+  width: 32px;
+  height: 164px;
+  z-index: -1;
+}
+.drawBg .draw .phase .listAll .taskList .subBlock {
+  cursor: pointer;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 147px;
+  padding: 0 10px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard {
+  height: 130px;
+  border-top: 3px solid;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 117px;
+  min-width: 280px;
+  padding: 0 20px;
+  position: relative;
+  font-size: 12px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardHeader {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardHeader span {
+  padding-left: 10px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardBody {
+  padding: 10px 0;
+  text-align: center;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter {
+  display: flex;
+  justify-content: space-between;
+  color: #8c8c8c;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter .footerLeft {
+  display: flex;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter div {
+  cursor: pointer;
+  padding-left: 7px;
+}
+.drawBg .draw .phase .listAll .taskList .taskItem .runCard .cardFooter div span {
+  padding-left: 5px;
+}
+.drawBg .draw .phaseALine {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.block {
+  width: 238px;
+  height: 40px;
+  border-radius: 4px;
+  padding-left: 10px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+.run-card {
+  height: 130px;
+  border-top: 3px solid;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 117px;
+  min-width: 280px;
+  padding: 0 20px;
+  position: relative;
+  font-size: 12px;
+}
+.run-card .card-header {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.run-card .card-header span {
+  padding-left: 10px;
+}
+.run-card .card-body {
+  padding: 10px 0;
+  text-align: center;
+}
+.run-card .card-footer {
+  display: flex;
+  justify-content: space-between;
+  color: #8c8c8c;
+}
+.run-card .card-footer .footer-left {
+  display: flex;
+}
+.run-card .card-footer div {
+  cursor: pointer;
+  padding-left: 7px;
+}
+.run-card .card-footer div span {
+  padding-left: 5px;
+}
+.subDashed {
+  margin: -13px 0 0 41px;
+}

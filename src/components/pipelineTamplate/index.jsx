@@ -41,20 +41,30 @@ class StepList extends PureComponent {
       this.setState({
         typeList: response.data.data
       });
+      this.getTemplateList()
     });
-    // 列表初始化
-    let type = 'java'
-    tPipelineTemplateFindByType({ pipelineType: type }).then(response => {
-      this.setState({
-        pipelineList: response.data.data
-      });
-      console.log(response.data.data);
-    });
-  };
-  changeTabs = () => {
 
+  };
+  // 初始化模板数据
+  getTemplateList(type = 'java') {
+    tPipelineTemplateFindByType({ pipelineType: type })
+      .then(response => {
+        this.setState({
+          pipelineList: response.data.data
+        });
+      })
+  }
+  changeTabs = (key) => {
+    let typeParam = {
+      typeName: this.state.typeList[key].typeName,
+      typeFlag: this.state.typeList[key].typeFlag
+    }
+    this.getTemplateList(this.state.typeList[key].typeFlag)
   }
 
+  gotoEditor(id) {
+    this.props.clickBack(id);
+  }
   componentDidMount() {
     this.initData();
   }
@@ -72,28 +82,25 @@ class StepList extends PureComponent {
         <div style={{ height: 600, overflowX: 'hidden', overflowY: 'auto' }}>
           <List grid={{ gutter: 16, column: 1 }}
             dataSource={this.state.pipelineList}
-            renderItem={item2 => (
+            renderItem={item => (
               <List.Item>
-                <Card className={styles.card} bodyStyle={{ padding: 0 }} >
-                  <div><AppleOutlined></AppleOutlined> {item2.pipelineName}</div>
+                <Card className={styles.card} bodyStyle={{ padding: 0 }} onClick={e => { this.gotoEditor(item.pipelineId) }}>
+                  <div><AppleOutlined></AppleOutlined> {item.pipelineName}</div>
                   <div className={styles.draw}>
                     {/* {item.phases} */}
-                    {/* {item.phases.map((phaseItem, key2) => (
-                      <div key={key2}>
-                        1
-                      </div>
-                    ))} */}
-                    <div className={styles.block} >
-                      <div>
-                        <div >
-                          <div className={styles.block}>
-                            <span>test</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.line}></div>
-                    </div>
+                    {(item.phases || []).map((phaseItem, key) => (
+                      <div className={styles.stage} key={key}>
+                        <div className={styles.block}>
 
+                          <div className={styles.block}>
+                            <span>{phaseItem.phaseName}</span>
+                          </div>
+
+
+                        </div>
+                        <div className={styles.line}></div>
+                      </div>
+                    ))}
                   </div>
                 </Card>
               </List.Item>
@@ -109,6 +116,7 @@ class StepList extends PureComponent {
         defaultActiveKey="1"
         onChange={this.changeTabs}
         tabBarExtraContent={
+          this.props.showAdd &&
           <Button type="primary" icon="plus">新建流水线模板</Button>
         }
       >

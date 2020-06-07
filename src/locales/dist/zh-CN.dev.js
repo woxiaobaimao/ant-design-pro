@@ -14,6 +14,7 @@ var _default = {
   'menu.pipeline.pipelineConfig.taskTemplate': '任务模板',
   'menu.pipeline.pipelineConfig.stepTemplate': '步骤模板',
   'menu.pipeline.pipelineConfig.pipelineTemplate': 'pipeline模板',
+  'menu.pipeline.pipelineConfig.pipelineTemplateDraw': 'pipeline模板',
   'navBar.lang': '语言',
   'layout.user.link.help': '帮助',
   'layout.user.link.privacy': '隐私',

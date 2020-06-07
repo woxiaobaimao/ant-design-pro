@@ -8,6 +8,18 @@ export function tPipelineTemplateFindByType(query) {
     params: query
   })
 }
+export function tPipelineTemplateId (id) {
+  return axios({
+    url: '/pipeline/tPipelineTemplate/' + id,
+    method: 'post'
+  })
+}
+export function deleteTemplate (id) {
+  return axios({
+    url: '/api///tPipelineTemplate/' + id,
+    method: 'get'
+  })
+}
 // 流水线列表
 export function getPipelineList(query) {
   return axios({
@@ -33,6 +45,14 @@ export function gPipelineRunpipelineRun(id, obj) {
   })
 }
 
+
+export function ePipelineCreatePipeline(id, obj) {
+  return axios({
+    url: '/api/ePipeline/createPipeline/' + id,
+    method: 'post',
+    data: obj
+  })
+}
 
 // 任务模板
 export async function templateTypeListXXX(query) {
