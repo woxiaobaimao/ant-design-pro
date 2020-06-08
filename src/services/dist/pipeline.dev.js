@@ -15,6 +15,8 @@ exports.tTaskTemplatePage = tTaskTemplatePage;
 exports.tTaskTemplategetTaskTemplate = tTaskTemplategetTaskTemplate;
 exports.tTaskTemplatedeleteTaskTemplate = tTaskTemplatedeleteTaskTemplate;
 exports.tTaskTemplateAddTaskTemplate = tTaskTemplateAddTaskTemplate;
+exports.templateTypeGetTemplatByType = templateTypeGetTemplatByType;
+exports.tTaskTemplateeditTaskTemplate = tTaskTemplateeditTaskTemplate;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -166,5 +168,21 @@ function tTaskTemplateAddTaskTemplate(obj) {
           return _context5.stop();
       }
     }
+  });
+}
+
+function templateTypeGetTemplatByType(id, obj) {
+  return (0, _axios["default"])({
+    url: '/api/templateType/getTemplatByType/' + id,
+    method: 'get',
+    params: obj
+  });
+}
+
+function tTaskTemplateeditTaskTemplate(obj) {
+  return (0, _axios["default"])({
+    url: '/pipeline/tTaskTemplate/editTaskTemplate',
+    method: 'post',
+    data: obj
   });
 } // 步骤模板

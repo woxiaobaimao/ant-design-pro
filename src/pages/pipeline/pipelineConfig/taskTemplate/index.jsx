@@ -23,6 +23,7 @@ import {
   notification,
   Checkbox,
   Radio,
+  Cascader
 } from 'antd';
 import {
   createFromIconfontCN,
@@ -34,7 +35,9 @@ import {
   tTaskTemplatePage,
   tTaskTemplategetTaskTemplate,
   tTaskTemplatedeleteTaskTemplate,
-  tTaskTemplateAddTaskTemplate
+  tTaskTemplateAddTaskTemplate,
+  templateTypeGetTemplatByType,
+  tTaskTemplateeditTaskTemplate
 } from '@/services/pipeline';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import IconSelect from '@/components/IconSelect';
@@ -54,9 +57,17 @@ const { confirm } = Modal;
 
 class CardList extends PureComponent {
   state = {
+    taskId: '',
     typeList: [],
     listCard: [],
     productTypeList: [],
+    varList: [{
+      paramKey: '',
+      paramName: '',
+      inputStyle: '',
+    }],
+    Cascaders: [],
+    stepList: [],
     page: {
       page: 1,
       limit: 12,
@@ -64,12 +75,105 @@ class CardList extends PureComponent {
       taskType: ""
     },
     total: 0,
-    visible: false,
+    visible: true,
     title: "新建",
     dialogIconVisible: false
   };
+  // 参数key
+  save1 = (key, e) => {
+    console.log(e.target.value);
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'paramKey': e.target.value } : item))
+    });
+  }
+  // 参数名称
+  save2 = (key, e) => {
+    console.log(e);
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'paramName': e.target.value } : item))
+    });
+  }
+  // 参数类型
+  save3 = (key, value) => {
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'inputStyle': value } : item))
+    });
+  }
+  // 默认值
+  save4 = (key, e) => {
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'defaultValue': e.target.value } : item))
+    });
+  }
+  // 单选框
+  save5 = (key, e) => {
+    console.log(e.target.checked);
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'checkNick': e.target.checked } : item))
+    });
+  }
+  // url
+  save6 = (key, e) => {
+    this.setState({
+      varList: this.state.varList.map((item, index) =>
+        (index == key ? { ...item, 'apiUrl': e.target.value } : item))
+    });
+  }
+  // 获取级联
+  getCascader() {
+    templateTypeGetTemplatByType('step_type')
+      .then(response => {
+        const newData = []
+        let obj = {}
+        response.data.map(item => {
+          const newChildren = []
+          obj = item
+          obj['label'] = item['typeName']
+          obj['value'] = item['typeFlag']
+          delete obj['typeName']
+          delete obj['typeFlag']
+          item['templateData'].map(item2 => {
+            newChildren.push({
+              label: item2.stepName,
+              value: item2.stepId
+            })
+          })
+          obj['children'] = newChildren
+          newData.push(obj)
+        })
+        this.setState({
+          Cascaders: newData
+        });
+      })
+  }
+  CascaderChange = value => {
+    var key = value[1]
+    var name = this.state.Cascaders.find((item) => item.value == value[0]).children.find((item) => item.value == value[1]).label
+    this.setState({
+      stepList: this.state.stepList.concat({
+        stepName: name,
+        stepId: key
+      })
+    });
+  }
+  delCascader = key => {
+    confirm({
+      title: '提示',
+      content: '是否删除?',
+      onOk: () => {
+        this.setState({
+          stepList: this.state.stepList.splice(key, 1)
+        });
 
+      }
+    })
 
+  }
   // 初始化数据
   initData = () => {
     templateTypeListXXX('task_type').then(response => {
@@ -87,7 +191,8 @@ class CardList extends PureComponent {
       });
     });
 
-    const { dispatch } = this.props;
+    this.getCascader()
+    // const { dispatch } = this.props;
 
     // dispatch({
     //   type: 'taskTemplate/initType',
@@ -137,6 +242,7 @@ class CardList extends PureComponent {
       this.getproductType()
       let { isJob, paramList, stepTemplates, taskType, taskName, flowTaskName, taskImage, isProduct, productType } = response.data.data
       this.setState({
+        taskId,
         title: '编辑',
         visible: true
       });
@@ -149,25 +255,62 @@ class CardList extends PureComponent {
         isProduct,
         productType
       });
+      this.getCascader()
       isJob ? this.props.form.setFieldsValue({ stepTemplates })
         : this.props.form.setFieldsValue({ paramList })
     })
   }
 
+
+  // 新增
   handleSubmit = e => {
+
     const { form } = this.props;
     e.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        values.isJob = values.isJob == 'true' ? 1 : 0
-        tTaskTemplateAddTaskTemplate(values).then(() => {
-          notification['success']({
-            message: '提示',
-            description: '添加成功',
-            duration: 8
+        if (this.title == "新增") {
+          values.isJob = values.isJob == 'true' ? 1 : 0
+          if (values.isJob == 'true') {
+            values.isJob = 1
+            values.stepTemplates = this.state.stepList.map((item, key) => { return { stepId: item.stepId, stepOrder: key } })
+          }
+          else {
+            values.isJob = 0
+            values.paramList = this.state.varList
+          }
+          tTaskTemplateAddTaskTemplate(values).then(() => {
+            notification['success']({
+              message: '提示',
+              description: '添加成功',
+              duration: 8
+            })
+            this.onClose()
           })
-          this.onClose()
-        })
+        } else {
+          if (values.isJob == 'true') {
+            values.isJob = 1
+            values.stepTemplates = this.state.stepList.map((item, key) => { return { stepId: item.stepId, stepOrder: key } })
+          } else {
+            values.isJob = 0
+            values.paramList = this.state.varList.map(item => {
+              if (item.uiStyle == 'radio:booleanParam') {
+                item.defaultValue = item.checkValue
+              }
+              return item
+            })
+          }
+          values.taskId = this.state.taskId
+          tTaskTemplateeditTaskTemplate(values).then(() => {
+            this.$notification['success']({
+              message: '提示',
+              description: '添加成功',
+              duration: 8
+            })
+            this.closeDrawer()
+          })
+
+        }
       }
     });
   };
@@ -219,25 +362,17 @@ class CardList extends PureComponent {
   changeTabs(key) { }
 
   addLine = () => {
-
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    const nextLine = keys.concat({ name: '', label: '' });
-    form.setFieldsValue({
-      keys: nextLine,
+    this.setState({
+      varList: this.state.varList.concat({})
     });
   };
 
   remove = k => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    if (keys.length === 1) {
+    if (k === 0) {
       return;
     }
-
-    // can use data-binding to set
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k),
+    this.setState({
+      varList: this.state.varList.splice(k, 1)
     });
   };
 
@@ -370,13 +505,81 @@ class CardList extends PureComponent {
                 <Form.Item label="添加参数">
                   {getFieldDecorator('paramList', {
                   })(
-                    <Input></Input>
+                    <div className={styles.varList}>
+                      <Row className={styles.header} gutter={10}>
+                        <Col span={4}>参数key</Col>
+                        <Col span={4}>参数名称</Col>
+                        <Col span={4}>参数类型</Col>
+                        <Col span={8}>默认值</Col>
+                        <Col span={2} style={{ textAlign: 'center' }}>URL</Col>
+                        <Col span={2}></Col>
+                      </Row>
+                      {/* 参数列表内容 */}
+                      {this.state.varList.map((item, key) => (
+                        <Row className={styles.content} gutter={10}>
+                          <Col span={this.state.varList[key].checkNick ? 3 : 4}>
+                            <Input placeholder="请输入参数key" onChange={e => { this.save1(key, e) }} />
+                          </Col>
+                          <Col span={this.state.varList[key].checkNick ? 3 : 4}>
+                            <Input placeholder="请输入参数名称" onChange={e => { this.save2(key, e) }} />
+                          </Col>
+                          <Col span={this.state.varList[key].checkNick ? 3 : 4}>
+                            <Select placeholder="请选择参数类型" onChange={e => { this.save3(key, e) }}>
+                              <Option value="text:string">文本框</Option>
+                              <Option value="radio:booleanParam">单选框</Option>
+                              <Option value="select:string">下拉列表</Option>
+                              <Option value="textarea:text">文本域</Option>
+                              <Option value="password:password">密码框</Option>
+                            </Select>
+                          </Col>
+                          <Col span={this.state.varList[key].checkNick ? 7 : 8}>
+                            <Input placeholder="请输入默认值" onChange={e => { this.save4(key, e) }} />
+                          </Col>
+                          <Col span={2} style={{ textAlign: 'center' }}>
+                            <Checkbox onChange={e => { this.save5(key, e) }} ></Checkbox>
+                          </Col>
+                          {this.state.varList[key].checkNick &&
+                            <Col span={4} >
+                              <Input placeholder="请输入Url" onChange={e => { this.save6(key, e) }} />
+                            </Col>
+                          }
+                          <Col span={1} >
+                            <Button type="link" icon="delete" onClick={e => { this.remove(key) }}></Button>
+                          </Col>
+                        </Row>
+                      ))}
+                      <div style={{ color: '#2d8cf0', textAlign: 'center', padding: ' 5px 0' }}>
+                        <Button type="link" icon="plus" onClick={this.addLine}>新增一行</Button>
+                      </div>
+                    </div>
                   )}
                 </Form.Item> :
                 <Form.Item label="步骤列表">
                   {getFieldDecorator('stepTemplates', {
                   })(
-                    <Input></Input>
+                    <div>
+                      <Cascader options={this.state.Cascaders} onChange={this.CascaderChange}>
+                        <Button type="link" icon="plus">添加步骤</Button>
+                      </Cascader>
+                      {
+                        this.state.stepList.map((item, key) => (
+                          <div key={key} style={{
+                            border: '1px solid rgba(235, 235, 235, 1)',
+                            cursor: 'pointer', padding: '3px 17px',
+                            marginTop: '10px', display: 'flex', justifyContent: 'space-between'
+                          }}>
+                            <div>
+                              <Icon type="align-right" />
+                              <Icon type="caret-right" style={{ padding: '0 10px' }} />
+                              <span>{item.stepName}</span>
+                            </div>
+                            <div>
+                              <Icon type="minus-circle" onClick={e => { this.delCascader(key) }} />
+                            </div>
+                          </div>
+                        ))
+                      }
+                    </div>
                   )}
                 </Form.Item>
             }

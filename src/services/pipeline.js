@@ -93,4 +93,19 @@ export async function tTaskTemplateAddTaskTemplate(obj) {
   })
 }
 
+export function templateTypeGetTemplatByType (id, obj) {
+  return axios({
+    url: '/api/templateType/getTemplatByType/' + id,
+    method: 'get',
+    params: obj
+  })
+}
+
+export function tTaskTemplateeditTaskTemplate(obj) {
+  return axios({
+    url: '/pipeline/tTaskTemplate/editTaskTemplate',
+    method: 'post',
+    data: obj
+  })
+}
 // 步骤模板
